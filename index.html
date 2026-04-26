@@ -65,7 +65,7 @@
 
   html {
     scroll-behavior: smooth;
-    scroll-snap-type: y proximity;
+    scroll-snap-type: y mandatory;
   }
 
   body {
@@ -80,7 +80,7 @@
   /* Cada seção é um snap point */
   section {
     scroll-snap-align: start;
-    scroll-snap-stop: normal;
+    scroll-snap-stop: always;
   }
 
   .serifa { font-family: 'Cormorant Garamond', serif; }
@@ -665,6 +665,52 @@
     color: var(--terracota-escuro);
   }
 
+  .rsvp-botao:disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
+
+  .rsvp-fallback {
+    margin-top: 24px;
+    text-align: center;
+  }
+
+  .rsvp-fallback a {
+    color: var(--osso);
+    opacity: 0.6;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: opacity 0.3s ease;
+  }
+
+  .rsvp-fallback a:hover {
+    opacity: 1;
+  }
+
+  .rsvp-erro {
+    display: none;
+    margin-top: 24px;
+    padding: 16px;
+    background: rgba(139, 58, 31, 0.3);
+    border: 1px solid rgba(217, 168, 108, 0.4);
+    color: var(--osso);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .rsvp-erro.show {
+    display: block;
+  }
+
   .rsvp-prazo {
     margin-top: 32px;
     font-size: 10px;
@@ -847,6 +893,12 @@
       </p>
 
       <form class="rsvp-form" id="formRsvp">
+        <!-- Web3Forms config -->
+        <input type="hidden" name="access_key" value="36e1334b-38ad-454b-9f87-e2d517ac6a40">
+        <input type="hidden" name="subject" value="Confirmação de Presença - Antonio 40">
+        <input type="hidden" name="from_name" value="Save the Date Antonio 40">
+        <input type="checkbox" name="botcheck" id="botcheck" style="display:none">
+
         <div class="rsvp-field">
           <label for="nome">seu nome</label>
           <input type="text" id="nome" name="nome" placeholder="como gosta de ser chamado" required>
@@ -870,10 +922,16 @@
           <input type="text" id="nomeAcompanhante" name="nomeAcompanhante" placeholder="nome completo">
         </div>
 
-        <button type="submit" class="rsvp-botao">confirmar presença</button>
+        <button type="submit" class="rsvp-botao" id="botaoSubmit">confirmar presença</button>
+
+        <div class="rsvp-fallback">
+          <a href="#" id="linkWhatsApp">prefiro confirmar pelo whatsapp</a>
+        </div>
       </form>
 
       <div class="rsvp-prazo">até 30 · maio · 2026</div>
+
+      <div class="rsvp-erro" id="rsvp-erro"></div>
     </div>
 
     <div class="rsvp-sucesso" id="rsvp-sucesso">
@@ -935,43 +993,105 @@
     e.target.value = value;
   });
 
-  // Submissão do formulário - envia via WhatsApp
-  // ATENÇÃO: substitua o número abaixo pelo seu WhatsApp (formato 5511999999999)
+  // Número do WhatsApp para fallback
   const SEU_WHATSAPP = '5561992879582';
 
-  document.getElementById('formRsvp').addEventListener('submit', function(e) {
-    e.preventDefault();
+  // Função que monta a mensagem (usada tanto pelo email quanto pelo WhatsApp)
+  function obterDadosFormulario() {
+    return {
+      nome: document.getElementById('nome').value.trim(),
+      telefone: document.getElementById('telefone').value.trim(),
+      comAcompanhante: document.getElementById('comAcompanhante').checked,
+      nomeAcompanhante: document.getElementById('nomeAcompanhante').value.trim()
+    };
+  }
 
-    const nome = document.getElementById('nome').value.trim();
-    const telefone = document.getElementById('telefone').value.trim();
-    const comAcompanhante = document.getElementById('comAcompanhante').checked;
-    const nomeAcompanhante = document.getElementById('nomeAcompanhante').value.trim();
+  // Função para abrir WhatsApp com mensagem montada
+  function abrirWhatsApp() {
+    const d = obterDadosFormulario();
+    if (!d.nome || !d.telefone) {
+      alert('Por favor, preencha pelo menos seu nome e telefone antes de continuar pelo WhatsApp.');
+      return;
+    }
 
-    // Montar mensagem
     let mensagem = `Olá Antonio! Confirmo presença no seu aniversário de 40 anos na Chapada dos Veadeiros.\n\n`;
-    mensagem += `*Nome:* ${nome}\n`;
-    mensagem += `*Telefone:* ${telefone}\n`;
-
-    if (comAcompanhante && nomeAcompanhante) {
-      mensagem += `*Acompanhante:* ${nomeAcompanhante}\n`;
+    mensagem += `*Nome:* ${d.nome}\n`;
+    mensagem += `*Telefone:* ${d.telefone}\n`;
+    if (d.comAcompanhante && d.nomeAcompanhante) {
+      mensagem += `*Acompanhante:* ${d.nomeAcompanhante}\n`;
     } else {
       mensagem += `*Acompanhante:* não\n`;
     }
-
     mensagem += `\nEstou ansioso(a) para julho!`;
 
-    // Codificar para URL
     const mensagemCodificada = encodeURIComponent(mensagem);
     const linkWhatsApp = `https://wa.me/${SEU_WHATSAPP}?text=${mensagemCodificada}`;
 
-    // Mostrar tela de sucesso
+    // Mostrar tela de sucesso e abrir WhatsApp
     document.getElementById('rsvp-formulario').style.display = 'none';
     document.getElementById('rsvp-sucesso').classList.add('show');
 
-    // Abrir WhatsApp em nova aba
     setTimeout(() => {
       window.open(linkWhatsApp, '_blank');
     }, 500);
+  }
+
+  // Link de fallback do WhatsApp
+  document.getElementById('linkWhatsApp').addEventListener('click', function(e) {
+    e.preventDefault();
+    abrirWhatsApp();
+  });
+
+  // Submissão principal via Web3Forms (email)
+  document.getElementById('formRsvp').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const botao = document.getElementById('botaoSubmit');
+    const erroDiv = document.getElementById('rsvp-erro');
+
+    // Estado de loading
+    botao.disabled = true;
+    botao.textContent = 'enviando...';
+    erroDiv.classList.remove('show');
+
+    // Montar dados
+    const formData = new FormData(this);
+    const d = obterDadosFormulario();
+
+    // Adicionar campo formatado para o email
+    let mensagemEmail = `Nova confirmação de presença!\n\n`;
+    mensagemEmail += `Nome: ${d.nome}\n`;
+    mensagemEmail += `Telefone: ${d.telefone}\n`;
+    if (d.comAcompanhante && d.nomeAcompanhante) {
+      mensagemEmail += `Acompanhante: SIM - ${d.nomeAcompanhante}\n`;
+    } else {
+      mensagemEmail += `Acompanhante: não\n`;
+    }
+    formData.append('message', mensagemEmail);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Sucesso - mostrar tela de confirmação
+        document.getElementById('rsvp-formulario').style.display = 'none';
+        document.getElementById('rsvp-sucesso').classList.add('show');
+      } else {
+        throw new Error(result.message || 'Erro ao enviar');
+      }
+    } catch (error) {
+      // Erro - oferecer fallback do WhatsApp
+      console.error('Erro ao enviar:', error);
+      botao.disabled = false;
+      botao.textContent = 'confirmar presença';
+      erroDiv.innerHTML = 'Não conseguimos enviar agora. Tente novamente em instantes ou <a href="#" onclick="abrirWhatsApp(); return false;" style="color: var(--ocre-claro); text-decoration: underline;">confirme pelo WhatsApp</a>.';
+      erroDiv.classList.add('show');
+    }
   });
 </script>
 
