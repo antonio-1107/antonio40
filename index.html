@@ -8,7 +8,6 @@
 <!-- ============ META TAGS PARA PREVIEW EM REDES SOCIAIS ============ -->
 <!-- IMPORTANTE: Quando hospedar, substitua a URL abaixo pela URL pública da imagem -->
 <!-- Por exemplo: https://seusite.com/preview.jpg -->
-<!-- O WhatsApp não consegue ler imagens em base64 - precisa ser uma URL pública -->
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Antonio 40 · Chapada dos Veadeiros">
@@ -205,6 +204,58 @@
   @keyframes pulse {
     0%, 100% { opacity: 0.3; transform: scaleY(0.5); transform-origin: top; }
     50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* Indicador persistente de scroll (aparece em todas as seções) */
+  .scroll-hint {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    opacity: 0;
+  }
+
+  .scroll-hint.visible {
+    opacity: 1;
+  }
+
+  .scroll-hint.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+
+  .scroll-hint-line {
+    width: 1px;
+    height: 28px;
+    background: rgba(242, 234, 216, 0.7);
+    margin-bottom: 8px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .scroll-hint-text {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(242, 234, 216, 0.7);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Quando estiver sobre fundo claro (abertura, info-bloco), inverte cores */
+  .scroll-hint.dark .scroll-hint-line {
+    background: rgba(26, 20, 16, 0.5);
+  }
+
+  .scroll-hint.dark .scroll-hint-text {
+    color: rgba(26, 20, 16, 0.6);
+    text-shadow: none;
   }
 
   .scroll-text {
@@ -670,27 +721,6 @@
     cursor: wait;
   }
 
-  .rsvp-fallback {
-    margin-top: 24px;
-    text-align: center;
-  }
-
-  .rsvp-fallback a {
-    color: var(--osso);
-    opacity: 0.6;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 15px;
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 4px;
-    transition: opacity 0.3s ease;
-  }
-
-  .rsvp-fallback a:hover {
-    opacity: 1;
-  }
-
   .rsvp-erro {
     display: none;
     margin-top: 24px;
@@ -769,6 +799,12 @@
 </head>
 <body>
 
+<!-- Indicador persistente de scroll -->
+<div class="scroll-hint visible" id="scrollHint">
+  <div class="scroll-hint-line"></div>
+  <div class="scroll-hint-text">deslize</div>
+</div>
+
 <!-- ============ HERO ============ -->
 <section class="hero">
   <div class="hero-bg"></div>
@@ -782,10 +818,7 @@
       <div class="subtitulo-hero">no coração do cerrado</div>
     </div>
 
-    <div class="hero-bottom">
-      <div class="scroll-indicator"></div>
-      <div class="scroll-text">deslize</div>
-    </div>
+
   </div>
 </section>
 
@@ -922,11 +955,15 @@
           <input type="text" id="nomeAcompanhante" name="nomeAcompanhante" placeholder="nome completo">
         </div>
 
-        <button type="submit" class="rsvp-botao" id="botaoSubmit">confirmar presença</button>
-
-        <div class="rsvp-fallback">
-          <a href="#" id="linkWhatsApp">prefiro confirmar pelo whatsapp</a>
+        <div class="rsvp-checkbox-wrapper">
+          <label class="rsvp-checkbox">
+            <input type="checkbox" id="ajudaHospedagem" name="ajudaHospedagem">
+            <span class="checkmark"></span>
+            <span class="check-label">quero ajuda com a hospedagem</span>
+          </label>
         </div>
+
+        <button type="submit" class="rsvp-botao" id="botaoSubmit">confirmar presença</button>
       </form>
 
       <div class="rsvp-prazo">até 30 · maio · 2026</div>
@@ -962,6 +999,101 @@
     observer.observe(el);
   });
 
+  // === SCROLL HINT INTELIGENTE ===
+  // Mostra a dica de scroll, esconde quando usuário rola, reaparece após inatividade
+  const scrollHint = document.getElementById('scrollHint');
+  let hintTimeout = null;
+  let lastScrollY = 0;
+  let isLastSection = false;
+
+  // Seções com fundo claro (texto do hint precisa ser escuro)
+  const lightSections = document.querySelectorAll('.abertura, .info-bloco');
+  // Última seção (RSVP) - hint não deve aparecer aqui
+  const lastSection = document.querySelector('.rsvp');
+
+  function checkLastSection() {
+    if (!lastSection) return false;
+    const rect = lastSection.getBoundingClientRect();
+    // Se a última seção está visível em mais de 50% da viewport
+    return rect.top < window.innerHeight * 0.5;
+  }
+
+  function checkLightBackground() {
+    // Verifica qual seção está mais visível na viewport
+    const viewportMiddle = window.innerHeight / 2;
+    let onLightBg = false;
+
+    lightSections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < viewportMiddle && rect.bottom > viewportMiddle) {
+        onLightBg = true;
+      }
+    });
+
+    if (onLightBg) {
+      scrollHint.classList.add('dark');
+    } else {
+      scrollHint.classList.remove('dark');
+    }
+  }
+
+  function showHint() {
+    if (isLastSection) return;
+    scrollHint.classList.add('visible');
+    scrollHint.classList.remove('hidden');
+  }
+
+  function hideHint() {
+    scrollHint.classList.remove('visible');
+    scrollHint.classList.add('hidden');
+  }
+
+  function handleScroll() {
+    const currentScrollY = window.scrollY;
+    const scrollDelta = Math.abs(currentScrollY - lastScrollY);
+
+    // Verificar se chegou na última seção
+    isLastSection = checkLastSection();
+
+    if (isLastSection) {
+      hideHint();
+      return;
+    }
+
+    // Verificar background para ajustar cor
+    checkLightBackground();
+
+    // Se houve scroll significativo, esconder hint temporariamente
+    if (scrollDelta > 5) {
+      hideHint();
+
+      // Limpar timeout anterior
+      if (hintTimeout) clearTimeout(hintTimeout);
+
+      // Reaparece após 2.5s de inatividade
+      hintTimeout = setTimeout(() => {
+        if (!isLastSection) showHint();
+      }, 2500);
+    }
+
+    lastScrollY = currentScrollY;
+  }
+
+  // Listener de scroll com throttle simples
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        handleScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Verificar background inicial
+  checkLightBackground();
+
   // Toggle campo acompanhante
   const checkboxAcompanhante = document.getElementById('comAcompanhante');
   const campoAcompanhante = document.getElementById('campoAcompanhante');
@@ -993,54 +1125,16 @@
     e.target.value = value;
   });
 
-  // Número do WhatsApp para fallback
-  const SEU_WHATSAPP = '5561992879582';
-
-  // Função que monta a mensagem (usada tanto pelo email quanto pelo WhatsApp)
+  // Função que extrai os dados do formulário
   function obterDadosFormulario() {
     return {
       nome: document.getElementById('nome').value.trim(),
       telefone: document.getElementById('telefone').value.trim(),
       comAcompanhante: document.getElementById('comAcompanhante').checked,
-      nomeAcompanhante: document.getElementById('nomeAcompanhante').value.trim()
+      nomeAcompanhante: document.getElementById('nomeAcompanhante').value.trim(),
+      ajudaHospedagem: document.getElementById('ajudaHospedagem').checked
     };
   }
-
-  // Função para abrir WhatsApp com mensagem montada
-  function abrirWhatsApp() {
-    const d = obterDadosFormulario();
-    if (!d.nome || !d.telefone) {
-      alert('Por favor, preencha pelo menos seu nome e telefone antes de continuar pelo WhatsApp.');
-      return;
-    }
-
-    let mensagem = `Olá Antonio! Confirmo presença no seu aniversário de 40 anos na Chapada dos Veadeiros.\n\n`;
-    mensagem += `*Nome:* ${d.nome}\n`;
-    mensagem += `*Telefone:* ${d.telefone}\n`;
-    if (d.comAcompanhante && d.nomeAcompanhante) {
-      mensagem += `*Acompanhante:* ${d.nomeAcompanhante}\n`;
-    } else {
-      mensagem += `*Acompanhante:* não\n`;
-    }
-    mensagem += `\nEstou ansioso(a) para julho!`;
-
-    const mensagemCodificada = encodeURIComponent(mensagem);
-    const linkWhatsApp = `https://wa.me/${SEU_WHATSAPP}?text=${mensagemCodificada}`;
-
-    // Mostrar tela de sucesso e abrir WhatsApp
-    document.getElementById('rsvp-formulario').style.display = 'none';
-    document.getElementById('rsvp-sucesso').classList.add('show');
-
-    setTimeout(() => {
-      window.open(linkWhatsApp, '_blank');
-    }, 500);
-  }
-
-  // Link de fallback do WhatsApp
-  document.getElementById('linkWhatsApp').addEventListener('click', function(e) {
-    e.preventDefault();
-    abrirWhatsApp();
-  });
 
   // Submissão principal via Web3Forms (email)
   document.getElementById('formRsvp').addEventListener('submit', async function(e) {
@@ -1067,6 +1161,7 @@
     } else {
       mensagemEmail += `Acompanhante: não\n`;
     }
+    mensagemEmail += `Ajuda com hospedagem: ${d.ajudaHospedagem ? 'SIM' : 'não'}\n`;
     formData.append('message', mensagemEmail);
 
     try {
@@ -1085,11 +1180,11 @@
         throw new Error(result.message || 'Erro ao enviar');
       }
     } catch (error) {
-      // Erro - oferecer fallback do WhatsApp
+      // Erro ao enviar formulário
       console.error('Erro ao enviar:', error);
       botao.disabled = false;
       botao.textContent = 'confirmar presença';
-      erroDiv.innerHTML = 'Não conseguimos enviar agora. Tente novamente em instantes ou <a href="#" onclick="abrirWhatsApp(); return false;" style="color: var(--ocre-claro); text-decoration: underline;">confirme pelo WhatsApp</a>.';
+      erroDiv.innerHTML = 'Não conseguimos enviar agora. Tente novamente em instantes.';
       erroDiv.classList.add('show');
     }
   });
