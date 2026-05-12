@@ -157,7 +157,7 @@
 
   /* LOGO BEM MAIOR - dominando o hero */
   .logo-principal {
-    width: clamp(360px, 92vw, 720px);
+    width: clamp(360px, 95vw, 760px);
     height: auto;
     color: var(--osso);
     filter: drop-shadow(0 6px 40px rgba(0, 0, 0, 0.5));
@@ -342,6 +342,38 @@
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
   }
 
+  /* Slide do convite (último do carrossel) - fundo bege como a abertura */
+  .galeria-slide-convite {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px 32px;
+    background: var(--osso);
+  }
+
+  .galeria-slide-convite::before,
+  .galeria-slide-convite::after {
+    display: none;
+  }
+
+  .galeria-convite-texto {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 6vw, 32px);
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--tinta);
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .galeria-convite-texto em {
+    color: var(--terracota);
+    font-style: italic;
+    font-weight: 400;
+  }
+
   .galeria-texto {
     font-family: 'Cormorant Garamond', serif;
     font-size: 20px;
@@ -354,8 +386,9 @@
   }
 
   .galeria-texto em {
-    color: var(--ocre-claro);
-    font-style: italic;
+    color: var(--osso);
+    font-style: normal;
+    font-weight: 400;
   }
 
   /* Controles de navegação */
@@ -819,6 +852,36 @@
     font-style: italic;
   }
 
+  .rsvp-texto-grande {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 5.5vw, 30px);
+    font-weight: 300;
+    line-height: 1.5;
+    opacity: 0.95;
+    max-width: 540px;
+    margin: 0 auto 32px;
+    font-style: italic;
+    color: var(--ocre-claro);
+  }
+
+  .rsvp-texto-grande em {
+    color: var(--ocre-claro);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .rsvp-cta {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(11px, 2.8vw, 13px);
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--osso);
+    opacity: 0.85;
+    margin-bottom: 36px;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
   /* FORMULÁRIO RSVP */
   .rsvp-form {
     max-width: 420px;
@@ -1159,10 +1222,6 @@
   <p class="texto-poetico">
     Há um lugar onde a rocha tem <em>mais memória que a vida</em>. Onde o cristal nasce no escuro e o céu, no inverno, devolve <em>a galáxia inteira</em>.
   </p>
-  <div class="ornamento"></div>
-  <p class="texto-poetico">
-    Foi ali que escolhi virar quarenta.<br><em>E você vem comigo.</em>
-  </p>
 </section>
 
 <!-- ============ GALERIA DO CERRADO (CARROSSEL HORIZONTAL) ============ -->
@@ -1178,7 +1237,7 @@
       <div class="galeria-conteudo">
         <div class="galeria-label">· a rocha ·</div>
         <p class="galeria-texto">
-          Aqui o tempo é outro. <em>Mede-se em eras.</em> A água passa, a pedra cede — e a gente, diante disso, <em>aprende a respirar mais devagar.</em>
+          Aqui o tempo é outro. Mede-se em eras. A água passa, a pedra cede — e a gente, diante disso, aprende a respirar mais devagar.
         </p>
       </div>
     </div>
@@ -1187,7 +1246,7 @@
       <div class="galeria-conteudo">
         <div class="galeria-label">· os cristais ·</div>
         <p class="galeria-texto">
-          Antes de tudo, houve <em>fogo e fratura</em>. Da terra ferida, nasceram cristais que <em>brilham desde antes do primeiro homem.</em>
+          Da terra ferida, nasceram cristais que brilham desde antes do primeiro homem.
         </p>
       </div>
     </div>
@@ -1196,7 +1255,7 @@
       <div class="galeria-conteudo">
         <div class="galeria-label">· a água ·</div>
         <p class="galeria-texto">
-          Aqui nascem as <em>águas que percorrem o Brasil</em>. Saem das frestas, escorrem pelas pedras, despencam dos paredões. <em>O cerrado é onde os rios aprendem a andar.</em>
+          Aqui nascem as águas que percorrem o Brasil. Saem das frestas, escorrem pelas pedras, despencam dos paredões. O cerrado é onde os rios aprendem a andar.
         </p>
       </div>
     </div>
@@ -1205,7 +1264,7 @@
       <div class="galeria-conteudo">
         <div class="galeria-label">· o cerrado ·</div>
         <p class="galeria-texto">
-          Quando o sol se inclina, o campo acende. As <em>sempre-vivas</em> brilham como pequenas estrelas no chão. E <em>o silêncio é uma forma de oração.</em>
+          Quando o sol se inclina, o campo acende. As sempre-vivas brilham como pequenas estrelas no chão.
         </p>
       </div>
     </div>
@@ -1214,9 +1273,14 @@
       <div class="galeria-conteudo">
         <div class="galeria-label">· o céu estrelado ·</div>
         <p class="galeria-texto">
-          À noite, a Chapada se abre. A <em>Via Láctea</em> desce até o horizonte. <em>Por um instante, parece que dá para tocar o universo.</em>
+          À noite, o céu estrelado se revela. Por um instante, parece que podemos tocar o universo.
         </p>
       </div>
+    </div>
+    <div class="galeria-slide galeria-slide-convite" data-index="5">
+      <p class="galeria-convite-texto">
+        Foi nesse lugar mágico que escolhi celebrar minhas <em>40 voltas ao sol</em>. <em>E você vem comigo.</em>
+      </p>
     </div>
   </div>
 
@@ -1226,6 +1290,7 @@
     <button class="galeria-bolinha" data-index="2" aria-label="Slide 3"></button>
     <button class="galeria-bolinha" data-index="3" aria-label="Slide 4"></button>
     <button class="galeria-bolinha" data-index="4" aria-label="Slide 5"></button>
+    <button class="galeria-bolinha" data-index="5" aria-label="Slide 6"></button>
   </div>
 </section>
 
@@ -1251,10 +1316,10 @@
 
   <div class="rsvp-content">
     <div id="rsvp-formulario">
-      <div class="rsvp-titulo serifa"><em>presença</em></div>
-      <p class="rsvp-texto">
+      <p class="rsvp-texto-grande">
         Mais que uma festa, um <em>convite à pausa</em>. Caminhar entre cristais, banhar em águas antigas, <em>ver as estrelas como elas merecem ser vistas</em>.
       </p>
+      <div class="rsvp-cta">Confirme sua presença</div>
 
       <form class="rsvp-form" id="formRsvp">
         <!-- Web3Forms config -->
