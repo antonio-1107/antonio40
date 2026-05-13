@@ -422,11 +422,6 @@
     color: var(--tinta);
     text-shadow: none;
   }
-  .galeria-cerrado.sobre-claro .galeria-pular {
-    color: var(--tinta);
-    text-shadow: none;
-  }
-
 /* Setas laterais (apenas desktop) */
   .galeria-seta {
     position: absolute;
@@ -470,31 +465,6 @@
 
   .galeria-seta-esq { left: 32px; }
   .galeria-seta-dir { right: 32px; }
-
-  /* Botão "pular galeria" (apenas se quiser ir direto pra próxima seção) */
-  .galeria-pular {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    z-index: 5;
-    color: var(--osso);
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    opacity: 0.6;
-    text-decoration: none;
-    transition: opacity 0.3s ease;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 8px 12px;
-  }
-
-  .galeria-pular:hover {
-    opacity: 1;
-  }
 
   /* Indicador persistente de scroll (aparece em todas as dobras exceto a última) */
   .scroll-hint {
@@ -1243,7 +1213,6 @@
 
 <!-- ============ GALERIA DO CERRADO (CARROSSEL HORIZONTAL) ============ -->
 <section class="galeria-cerrado" id="galeriaCerrado">
-  <button class="galeria-pular" id="galeriaPular">pular ↓</button>
 
   <button class="galeria-seta galeria-seta-esq" id="galeriaSetaEsq" aria-label="Slide anterior">←</button>
   <button class="galeria-seta galeria-seta-dir" id="galeriaSetaDir" aria-label="Próximo slide">→</button>
@@ -1430,16 +1399,19 @@
 
   // === SCROLL HINT ===
   // Comportamento desejado:
-  //   - Visível em TODAS as dobras (hero, abertura, carrossel, info-bloco)
-  //   - Oculto na última dobra (RSVP)
+  //   - Começa OCULTO em qualquer dobra
+  //   - Aparece somente após 2s parado na mesma dobra/slide
+  //   - Qualquer movimento (scroll vertical da página OU troca de slide do
+  //     carrossel) esconde o hint e reinicia o timer de 2s
+  //   - Nunca aparece na última dobra (RSVP)
   //   - Tom claro sobre fundos escuros; tom escuro sobre fundos claros (osso)
   //   - Dentro do carrossel: tom adapta ao slide atual (slide convite = fundo claro)
-  //   - Esconde brevemente durante scroll ativo e reaparece após 1.5s parado
   const scrollHint = document.getElementById('scrollHint');
   const galeriaSection = document.querySelector('.galeria-cerrado');
   const rsvpSection = document.querySelector('.rsvp');
   const lightSections = document.querySelectorAll('.abertura, .info-bloco');
 
+  const HINT_DELAY = 2000; // 2 segundos parados antes do hint aparecer
   let hintTimeout = null;
   let lastScrollY = window.scrollY;
 
@@ -1451,22 +1423,14 @@
     return rect.top < meio && rect.bottom > meio;
   }
 
-  // Atualiza visibilidade e tom do hint conforme a seção visível
-  function updateScrollHint() {
-    // 1) Última dobra (RSVP) — esconde e encerra
-    if (viewportSobre(rsvpSection)) {
-      scrollHint.classList.remove('visible');
-      scrollHint.classList.add('hidden');
-      return;
-    }
-
-    // 2) Decidir tom (claro padrão ou .dark sobre fundo creme)
+  // Avalia o tom (claro vs escuro) do contexto atual e aplica ao hint
+  function ajustarTomHint() {
     let fundoClaro = false;
     lightSections.forEach(sec => {
       if (viewportSobre(sec)) fundoClaro = true;
     });
 
-    // Dentro do carrossel, o slide do convite (último, índice 5) tem fundo --osso
+    // Dentro do carrossel, o slide do convite (último) tem fundo --osso
     if (viewportSobre(galeriaSection)
         && typeof galeria !== 'undefined'
         && galeria.slides
@@ -1475,46 +1439,50 @@
     }
 
     scrollHint.classList.toggle('dark', fundoClaro);
-
-    // 3) Mostrar o hint (a menos que o handleScroll esteja escondendo por inatividade)
-    scrollHint.classList.add('visible');
-    scrollHint.classList.remove('hidden');
   }
 
-  function handleScroll() {
-    const scrollDelta = Math.abs(window.scrollY - lastScrollY);
-
-    // Sempre re-avalia estado (cor, RSVP)
-    updateScrollHint();
-
-    // Se o usuário acabou de scrollar, esconde brevemente
-    if (scrollDelta > 5 && !viewportSobre(rsvpSection)) {
-      scrollHint.classList.remove('visible');
-      scrollHint.classList.add('hidden');
-
-      if (hintTimeout) clearTimeout(hintTimeout);
-      hintTimeout = setTimeout(() => {
-        updateScrollHint();
-      }, 1500);
-    }
-
-    lastScrollY = window.scrollY;
+  // Esconde imediatamente
+  function esconderHint() {
+    scrollHint.classList.remove('visible');
+    scrollHint.classList.add('hidden');
   }
 
-  // Listener de scroll com throttle simples
+  // Reinicia o ciclo: esconde agora e agenda exibição após 2s
+  // (a menos que a viewport esteja no RSVP — aí nunca mostra)
+  function reiniciarTimerHint() {
+    esconderHint();
+    if (hintTimeout) clearTimeout(hintTimeout);
+
+    if (viewportSobre(rsvpSection)) return;
+
+    hintTimeout = setTimeout(() => {
+      // Re-checa antes de mostrar: viewport pode ter mudado durante a espera
+      if (viewportSobre(rsvpSection)) return;
+      ajustarTomHint();
+      scrollHint.classList.remove('hidden');
+      scrollHint.classList.add('visible');
+    }, HINT_DELAY);
+  }
+
+  // Scroll vertical da página → conta como movimento
   let ticking = false;
   window.addEventListener('scroll', () => {
     if (!ticking) {
       window.requestAnimationFrame(() => {
-        handleScroll();
+        const scrollDelta = Math.abs(window.scrollY - lastScrollY);
+        if (scrollDelta > 5) {
+          reiniciarTimerHint();
+          lastScrollY = window.scrollY;
+        }
         ticking = false;
       });
       ticking = true;
     }
   }, { passive: true });
 
-  // Estado inicial
-  updateScrollHint();
+  // Estado inicial: oculto, e arma o timer para a primeira dobra
+  esconderHint();
+  reiniciarTimerHint();
 
   // ============ CARROSSEL DA GALERIA DO CERRADO ============
   const galeria = {
@@ -1523,7 +1491,6 @@
     bolinhas: document.querySelectorAll('.galeria-bolinha'),
     setaEsq: document.getElementById('galeriaSetaEsq'),
     setaDir: document.getElementById('galeriaSetaDir'),
-    pular: document.getElementById('galeriaPular'),
     container: document.getElementById('galeriaCerrado'),
     indexAtual: 0
   };
@@ -1549,10 +1516,11 @@
       atualizarIndicadores();
 
       // Slide do convite (último, fundo --osso): inverte cores dos controles
-      // e atualiza o tom do scroll-hint para escuro
       const noConvite = galeria.indexAtual === galeria.slides.length - 1;
       galeria.container.classList.toggle('sobre-claro', noConvite);
-      updateScrollHint();
+
+      // Troca de slide conta como movimento — reinicia o timer do hint
+      reiniciarTimerHint();
     }
   }
 
@@ -1584,14 +1552,6 @@
     if (galeria.indexAtual < galeria.slides.length - 1) {
       const targetScroll = (galeria.indexAtual + 1) * galeria.track.offsetWidth;
       galeria.track.scrollTo({ left: targetScroll, behavior: 'smooth' });
-    }
-  });
-
-  // Botão "pular" leva pra próxima seção (datas)
-  galeria.pular.addEventListener('click', () => {
-    const proximaSecao = galeria.container.nextElementSibling;
-    if (proximaSecao) {
-      proximaSecao.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
 
