@@ -249,28 +249,25 @@
     display: block;
   }
 
-  /* Gradiente sobre a imagem para legibilidade do texto */
+  /* Gradiente sobre a imagem para legibilidade do texto centralizado */
   .galeria-slide::before {
     content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(180deg,
-      rgba(0, 0, 0, 0.15) 0%,
-      rgba(0, 0, 0, 0.05) 30%,
-      rgba(0, 0, 0, 0.45) 65%,
-      rgba(0, 0, 0, 0.85) 100%);
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.55) 50%,
+      rgba(0, 0, 0, 0.65) 100%);
     z-index: 2;
     pointer-events: none;
   }
 
-  /* Tinte de cor semântica - cada slide tem sua cor */
+  /* Tinte de cor semântica - uniforme para texto centralizado */
   .galeria-slide[data-cor="carvao"]::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg,
-      transparent 50%,
-      rgba(28, 26, 24, 0.5) 100%);
+    background: rgba(28, 26, 24, 0.35);
     z-index: 2;
     pointer-events: none;
   }
@@ -279,9 +276,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg,
-      transparent 50%,
-      rgba(92, 36, 16, 0.5) 100%);
+    background: rgba(92, 36, 16, 0.35);
     z-index: 2;
     pointer-events: none;
   }
@@ -290,9 +285,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg,
-      transparent 50%,
-      rgba(14, 35, 41, 0.55) 100%);
+    background: rgba(14, 35, 41, 0.38);
     z-index: 2;
     pointer-events: none;
   }
@@ -301,9 +294,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg,
-      transparent 50%,
-      rgba(42, 53, 23, 0.5) 100%);
+    background: rgba(42, 53, 23, 0.35);
     z-index: 2;
     pointer-events: none;
   }
@@ -312,20 +303,20 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg,
-      transparent 50%,
-      rgba(10, 14, 26, 0.6) 100%);
+    background: rgba(10, 14, 26, 0.42);
     z-index: 2;
     pointer-events: none;
   }
 
-  /* Conteúdo do slide (texto sobreposto) */
+  /* Conteúdo do slide (texto sobreposto, centralizado vertical e horizontalmente) */
   .galeria-conteudo {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 48px 32px 100px;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 32px;
     z-index: 3;
     color: var(--osso);
     text-align: center;
@@ -394,7 +385,7 @@
   /* Controles de navegação */
   .galeria-paginacao {
     position: absolute;
-    bottom: 48px;
+    top: 32px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -417,6 +408,23 @@
     background: var(--osso);
     width: 24px;
     border-radius: 3px;
+  }
+
+  /* Quando o carrossel está sobre fundo claro (slide do convite),
+     inverte cor de bolinhas, setas e botão "pular" para escuro */
+  .galeria-cerrado.sobre-claro .galeria-bolinha {
+    background: rgba(26, 20, 16, 0.25);
+  }
+  .galeria-cerrado.sobre-claro .galeria-bolinha.ativa {
+    background: var(--tinta);
+  }
+  .galeria-cerrado.sobre-claro .galeria-seta {
+    color: var(--tinta);
+    text-shadow: none;
+  }
+  .galeria-cerrado.sobre-claro .galeria-pular {
+    color: var(--tinta);
+    text-shadow: none;
   }
 
 /* Setas laterais (apenas desktop) */
@@ -488,9 +496,7 @@
     opacity: 1;
   }
 
-  /* Indicador persistente de scroll (aparece em todas as seções) */
-
-  /* Indicador persistente de scroll (aparece em todas as seções) */
+  /* Indicador persistente de scroll (aparece em todas as dobras exceto a última) */
   .scroll-hint {
     position: fixed;
     bottom: 28px;
@@ -503,14 +509,6 @@
     pointer-events: none;
     transition: opacity 0.6s ease, transform 0.6s ease, bottom 0.6s ease;
     opacity: 0;
-  }
-
-  /* Quando estiver sobre o carrossel, esconde completamente
-     (a paginação já indica que tem mais slides; quando o usuário sai
-     do carrossel, o hint reaparece nas seções verticais seguintes) */
-  .scroll-hint.acima-carrossel {
-    opacity: 0 !important;
-    pointer-events: none;
   }
 
   .scroll-hint.visible {
@@ -540,13 +538,13 @@
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
   }
 
-  /* Quando estiver sobre fundo claro (abertura, info-bloco), inverte cores */
+  /* Quando estiver sobre fundo claro (abertura, info-bloco, slide convite), inverte cores */
   .scroll-hint.dark .scroll-hint-line {
-    background: rgba(26, 20, 16, 0.5);
+    background: rgba(26, 20, 16, 0.7);
   }
 
   .scroll-hint.dark .scroll-hint-text {
-    color: rgba(26, 20, 16, 0.6);
+    color: rgba(26, 20, 16, 0.75);
     text-shadow: none;
   }
 
@@ -1430,100 +1428,77 @@
     observer.observe(el);
   });
 
-  // === SCROLL HINT INTELIGENTE ===
-  // Mostra a dica de scroll, esconde quando usuário rola, reaparece após inatividade
+  // === SCROLL HINT ===
+  // Comportamento desejado:
+  //   - Visível em TODAS as dobras (hero, abertura, carrossel, info-bloco)
+  //   - Oculto na última dobra (RSVP)
+  //   - Tom claro sobre fundos escuros; tom escuro sobre fundos claros (osso)
+  //   - Dentro do carrossel: tom adapta ao slide atual (slide convite = fundo claro)
+  //   - Esconde brevemente durante scroll ativo e reaparece após 1.5s parado
   const scrollHint = document.getElementById('scrollHint');
-  let hintTimeout = null;
-  let lastScrollY = 0;
-  let isLastSection = false;
-
-  // Seções com fundo claro (texto do hint precisa ser escuro)
+  const galeriaSection = document.querySelector('.galeria-cerrado');
+  const rsvpSection = document.querySelector('.rsvp');
   const lightSections = document.querySelectorAll('.abertura, .info-bloco');
-  // Última seção (RSVP) - hint não deve aparecer aqui
-  const lastSection = document.querySelector('.rsvp');
 
-  function checkLastSection() {
-    if (!lastSection) return false;
-    const rect = lastSection.getBoundingClientRect();
-    // Se a última seção está visível em mais de 50% da viewport
-    return rect.top < window.innerHeight * 0.5;
+  let hintTimeout = null;
+  let lastScrollY = window.scrollY;
+
+  // Decide se estamos com a viewport sobre uma seção dada
+  function viewportSobre(el) {
+    if (!el) return false;
+    const rect = el.getBoundingClientRect();
+    const meio = window.innerHeight / 2;
+    return rect.top < meio && rect.bottom > meio;
   }
 
-  const galeriaSection = document.querySelector('.galeria-cerrado');
+  // Atualiza visibilidade e tom do hint conforme a seção visível
+  function updateScrollHint() {
+    // 1) Última dobra (RSVP) — esconde e encerra
+    if (viewportSobre(rsvpSection)) {
+      scrollHint.classList.remove('visible');
+      scrollHint.classList.add('hidden');
+      return;
+    }
 
-  function checkLightBackground() {
-    // Verifica qual seção está mais visível na viewport
-    const viewportMiddle = window.innerHeight / 2;
-    let onLightBg = false;
-    let onCarousel = false;
-
-    lightSections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      if (rect.top < viewportMiddle && rect.bottom > viewportMiddle) {
-        onLightBg = true;
-      }
+    // 2) Decidir tom (claro padrão ou .dark sobre fundo creme)
+    let fundoClaro = false;
+    lightSections.forEach(sec => {
+      if (viewportSobre(sec)) fundoClaro = true;
     });
 
-    if (galeriaSection) {
-      const rect = galeriaSection.getBoundingClientRect();
-      if (rect.top < viewportMiddle && rect.bottom > viewportMiddle) {
-        onCarousel = true;
-      }
+    // Dentro do carrossel, o slide do convite (último, índice 5) tem fundo --osso
+    if (viewportSobre(galeriaSection)
+        && typeof galeria !== 'undefined'
+        && galeria.slides
+        && galeria.indexAtual === galeria.slides.length - 1) {
+      fundoClaro = true;
     }
 
-    if (onLightBg) {
-      scrollHint.classList.add('dark');
-    } else {
-      scrollHint.classList.remove('dark');
-    }
+    scrollHint.classList.toggle('dark', fundoClaro);
 
-    if (onCarousel) {
-      scrollHint.classList.add('acima-carrossel');
-    } else {
-      scrollHint.classList.remove('acima-carrossel');
-    }
-  }
-
-  function showHint() {
-    if (isLastSection) return;
+    // 3) Mostrar o hint (a menos que o handleScroll esteja escondendo por inatividade)
     scrollHint.classList.add('visible');
     scrollHint.classList.remove('hidden');
   }
 
-  function hideHint() {
-    scrollHint.classList.remove('visible');
-    scrollHint.classList.add('hidden');
-  }
-
   function handleScroll() {
-    const currentScrollY = window.scrollY;
-    const scrollDelta = Math.abs(currentScrollY - lastScrollY);
+    const scrollDelta = Math.abs(window.scrollY - lastScrollY);
 
-    // Verificar se chegou na última seção
-    isLastSection = checkLastSection();
+    // Sempre re-avalia estado (cor, RSVP)
+    updateScrollHint();
 
-    if (isLastSection) {
-      hideHint();
-      return;
-    }
+    // Se o usuário acabou de scrollar, esconde brevemente
+    if (scrollDelta > 5 && !viewportSobre(rsvpSection)) {
+      scrollHint.classList.remove('visible');
+      scrollHint.classList.add('hidden');
 
-    // Verificar background para ajustar cor
-    checkLightBackground();
-
-    // Se houve scroll significativo, esconder hint temporariamente
-    if (scrollDelta > 5) {
-      hideHint();
-
-      // Limpar timeout anterior
       if (hintTimeout) clearTimeout(hintTimeout);
-
-      // Reaparece após 2.5s de inatividade
       hintTimeout = setTimeout(() => {
-        if (!isLastSection) showHint();
-      }, 2500);
+        updateScrollHint();
+      }, 1500);
     }
 
-    lastScrollY = currentScrollY;
+    lastScrollY = window.scrollY;
   }
 
   // Listener de scroll com throttle simples
@@ -1538,8 +1513,8 @@
     }
   }, { passive: true });
 
-  // Verificar background inicial
-  checkLightBackground();
+  // Estado inicial
+  updateScrollHint();
 
   // ============ CARROSSEL DA GALERIA DO CERRADO ============
   const galeria = {
@@ -1572,6 +1547,12 @@
     if (novoIndex !== galeria.indexAtual) {
       galeria.indexAtual = novoIndex;
       atualizarIndicadores();
+
+      // Slide do convite (último, fundo --osso): inverte cores dos controles
+      // e atualiza o tom do scroll-hint para escuro
+      const noConvite = galeria.indexAtual === galeria.slides.length - 1;
+      galeria.container.classList.toggle('sobre-claro', noConvite);
+      updateScrollHint();
     }
   }
 
