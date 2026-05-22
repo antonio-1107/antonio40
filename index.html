@@ -1547,34 +1547,61 @@
   });
 
   // Detectar fundo claro/escuro sob o botão do menu e ajustar cor
-  // Faz um sample do elemento atrás do botão a cada scroll
-  function atualizarCorMenu() {
-    if (menuOverlay.classList.contains('aberto')) return;
-    const x = window.innerWidth - 46;
-    const y = 46;
-    const el = document.elementFromPoint(x, y);
-    if (!el || el === menuToggle || menuToggle.contains(el)) return;
-    // Subir na árvore para encontrar uma section/parent com cor de fundo
-    let alvo = el;
-    let claro = false;
-    while (alvo && alvo !== document.body) {
-      const bg = window.getComputedStyle(alvo).backgroundColor;
-      // checar se tem RGB e calcular luminosidade
-      const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-      if (m && (parseInt(m[1]) + parseInt(m[2]) + parseInt(m[3])) > 0) {
-        const r = parseInt(m[1]), g = parseInt(m[2]), b = parseInt(m[3]);
-        const lum = (r * 299 + g * 587 + b * 114) / 1000;
-        claro = lum > 180;
-        break;
+  // Identifica qual <section> está sob o canto superior direito e lê o bg dela
+  const secoesParaDeteccao = Array.from(document.querySelectorAll('section'));
+
+  function corDeFundoEfetiva(el) {
+    while (el && el !== document.body) {
+      const bg = window.getComputedStyle(el).backgroundColor;
+      const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+      if (m) {
+        const alpha = m[4] !== undefined ? parseFloat(m[4]) : 1;
+        const soma = parseInt(m[1]) + parseInt(m[2]) + parseInt(m[3]);
+        if (alpha > 0 && soma > 0) return { r: +m[1], g: +m[2], b: +m[3] };
       }
-      alvo = alvo.parentElement;
+      el = el.parentElement;
     }
-    menuToggle.classList.toggle('escuro', claro);
+    return null;
+  }
+
+  let rafToken = null;
+  function atualizarCorMenu() {
+    if (rafToken) return;
+    rafToken = requestAnimationFrame(() => {
+      rafToken = null;
+      if (menuOverlay.classList.contains('aberto')) return;
+
+      // Encontrar a seção que cobre o ponto (top-right do menu)
+      const x = window.innerWidth - 46;
+      const y = 46;
+      let secaoEncontrada = null;
+      for (const sec of secoesParaDeteccao) {
+        const r = sec.getBoundingClientRect();
+        if (y >= r.top && y <= r.bottom && x >= r.left && x <= r.right) {
+          secaoEncontrada = sec;
+          break;
+        }
+      }
+
+      let cor = null;
+      if (secaoEncontrada) cor = corDeFundoEfetiva(secaoEncontrada);
+      if (!cor) {
+        // fallback: pegar do body
+        const elPonto = document.elementFromPoint(x, y);
+        if (elPonto) cor = corDeFundoEfetiva(elPonto);
+      }
+      if (!cor) return;
+
+      const lum = (cor.r * 299 + cor.g * 587 + cor.b * 114) / 1000;
+      menuToggle.classList.toggle('escuro', lum > 180);
+    });
   }
   window.addEventListener('scroll', atualizarCorMenu, { passive: true });
+  document.addEventListener('scroll', atualizarCorMenu, { passive: true, capture: true });
   window.addEventListener('resize', atualizarCorMenu);
-  // chamar uma vez no carregamento e depois que o DOM estiver pronto
+  // chamar uma vez no carregamento
   setTimeout(atualizarCorMenu, 100);
+  setTimeout(atualizarCorMenu, 600);
 
   // Reveal on scroll
   const observerOptions = {
