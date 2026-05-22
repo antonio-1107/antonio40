@@ -1177,9 +1177,153 @@
     .rsvp-texto { font-size: 24px; max-width: 480px; }
     .rsvp-form { max-width: 480px; }
   }
+
+  /* ============ MENU SANDUÍCHE ============ */
+  .menu-toggle {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 8px;
+    color: var(--osso);
+    transition: color 0.6s ease;
+  }
+  .menu-toggle.escuro { color: var(--terracota-escuro); }
+  .menu-toggle span {
+    display: block;
+    height: 1.5px;
+    background: currentColor;
+    transition: all 0.4s ease;
+  }
+  .menu-toggle span:nth-child(1) { width: 28px; }
+  .menu-toggle span:nth-child(2) { width: 22px; }
+  .menu-toggle span:nth-child(3) { width: 28px; }
+  .menu-toggle:hover span:nth-child(2) { width: 28px; }
+
+  body.menu-aberto .menu-toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--terracota-noite);
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .menu-overlay.aberto {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .menu-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top, rgba(139,58,31,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(42,16,6,0) 0%, var(--terracota-noite) 70%);
+    pointer-events: none;
+  }
+  .menu-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--osso);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-close::before, .menu-close::after {
+    content: '';
+    position: absolute;
+    width: 28px;
+    height: 1.5px;
+    background: currentColor;
+  }
+  .menu-close::before { transform: rotate(45deg); }
+  .menu-close::after { transform: rotate(-45deg); }
+
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .menu-nav a {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(40px, 9vw, 64px);
+    color: var(--osso);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+  }
+  .menu-nav a:hover { opacity: 1; }
+  .menu-nav a.atual {
+    color: var(--ocre-claro);
+    opacity: 1;
+  }
+  .menu-rodape {
+    position: absolute;
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--osso);
+    opacity: 0.4;
+  }
+  body.menu-aberto { overflow: hidden; }
 </style>
 </head>
 <body>
+
+<!-- ============ MENU SANDUÍCHE ============ -->
+<button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<div class="menu-overlay" id="menuOverlay">
+  <button class="menu-close" id="menuClose" aria-label="Fechar menu"></button>
+  <nav class="menu-nav">
+    <a href="/" class="atual">início</a>
+    <a href="/programacao">programação</a>
+    <a href="/hospedagens">onde ficar</a>
+  </nav>
+  <div class="menu-rodape">10 · 11 julho 2026</div>
+</div>
 
 <!-- Indicador persistente de scroll -->
 <div class="scroll-hint visible" id="scrollHint">
@@ -1379,6 +1523,59 @@
 </section>
 
 <script>
+  // ============ MENU SANDUÍCHE ============
+  const menuToggle = document.getElementById('menuToggle');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const menuClose = document.getElementById('menuClose');
+
+  function abrirMenu() {
+    menuOverlay.classList.add('aberto');
+    document.body.classList.add('menu-aberto');
+  }
+  function fecharMenu() {
+    menuOverlay.classList.remove('aberto');
+    document.body.classList.remove('menu-aberto');
+  }
+
+  menuToggle.addEventListener('click', abrirMenu);
+  menuClose.addEventListener('click', fecharMenu);
+  menuOverlay.addEventListener('click', (e) => {
+    if (e.target === menuOverlay) fecharMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') fecharMenu();
+  });
+
+  // Detectar fundo claro/escuro sob o botão do menu e ajustar cor
+  // Faz um sample do elemento atrás do botão a cada scroll
+  function atualizarCorMenu() {
+    if (menuOverlay.classList.contains('aberto')) return;
+    const x = window.innerWidth - 46;
+    const y = 46;
+    const el = document.elementFromPoint(x, y);
+    if (!el || el === menuToggle || menuToggle.contains(el)) return;
+    // Subir na árvore para encontrar uma section/parent com cor de fundo
+    let alvo = el;
+    let claro = false;
+    while (alvo && alvo !== document.body) {
+      const bg = window.getComputedStyle(alvo).backgroundColor;
+      // checar se tem RGB e calcular luminosidade
+      const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+      if (m && (parseInt(m[1]) + parseInt(m[2]) + parseInt(m[3])) > 0) {
+        const r = parseInt(m[1]), g = parseInt(m[2]), b = parseInt(m[3]);
+        const lum = (r * 299 + g * 587 + b * 114) / 1000;
+        claro = lum > 180;
+        break;
+      }
+      alvo = alvo.parentElement;
+    }
+    menuToggle.classList.toggle('escuro', claro);
+  }
+  window.addEventListener('scroll', atualizarCorMenu, { passive: true });
+  window.addEventListener('resize', atualizarCorMenu);
+  // chamar uma vez no carregamento e depois que o DOM estiver pronto
+  setTimeout(atualizarCorMenu, 100);
+
   // Reveal on scroll
   const observerOptions = {
     threshold: 0.12,

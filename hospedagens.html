@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antonio 40 · Onde Ficar</title>
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Antonio 40 · Onde Ficar">
+<meta property="og:description" content="Curadoria de hospedagens em Alto Paraíso de Goiás para a celebração de 40 anos do Antonio.">
+<meta property="og:image" content="https://antonio40.com/preview-og.jpg">
+<meta property="og:locale" content="pt_BR">
+<meta name="description" content="Curadoria de hospedagens em Alto Paraíso de Goiás para os convidados do Antonio 40.">
+<meta name="theme-color" content="#F2EAD8">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --terracota: #8B3A1F;
+    --terracota-escuro: #5C2410;
+    --terracota-noite: #2A1006;
+    --ocre: #C28840;
+    --ocre-claro: #D9A86C;
+    --ocre-suave: #E8C898;
+    --musgo-escuro: #2A3320;
+    --noite-cosmica: #0A0E1A;
+    --osso: #F2EAD8;
+    --osso-quente: #E8DCC4;
+    --pedra: #8C7A5C;
+    --tinta: #1A1410;
+    --quartzo: #D4C4B0;
+    --carvao: #1C1A18;
+    --verde-dourado: #2A3517;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--osso);
+    color: var(--tinta);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .serifa { font-family: 'Cormorant Garamond', serif; }
+
+  /* ============ MENU SANDUÍCHE ============ */
+  .menu-toggle {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 8px;
+    color: var(--terracota-escuro);
+    transition: opacity 0.3s ease;
+  }
+
+  .menu-toggle span {
+    display: block;
+    height: 1.5px;
+    background: currentColor;
+    transition: all 0.4s ease;
+  }
+  .menu-toggle span:nth-child(1) { width: 28px; }
+  .menu-toggle span:nth-child(2) { width: 22px; }
+  .menu-toggle span:nth-child(3) { width: 28px; }
+
+  .menu-toggle:hover span:nth-child(2) { width: 28px; }
+
+  body.menu-aberto .menu-toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--terracota-noite);
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .menu-overlay.aberto {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .menu-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top, rgba(139,58,31,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(42,16,6,0) 0%, var(--terracota-noite) 70%);
+    pointer-events: none;
+  }
+
+  .menu-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--osso);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-close::before, .menu-close::after {
+    content: '';
+    position: absolute;
+    width: 28px;
+    height: 1.5px;
+    background: currentColor;
+  }
+  .menu-close::before { transform: rotate(45deg); }
+  .menu-close::after { transform: rotate(-45deg); }
+
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .menu-nav a {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(40px, 9vw, 64px);
+    color: var(--osso);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+  }
+  .menu-nav a:hover { opacity: 1; }
+  .menu-nav a.atual {
+    color: var(--ocre-claro);
+    opacity: 1;
+  }
+
+  .menu-rodape {
+    position: absolute;
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--osso);
+    opacity: 0.4;
+  }
+
+  body.menu-aberto { overflow: hidden; }
+
+  /* ============ HERO DA PÁGINA ============ */
+  .pagina-hero {
+    min-height: 60vh;
+    background: var(--osso-quente);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pagina-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--terracota-escuro));
+    opacity: 0.3;
+  }
+
+  .pagina-hero .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.6em;
+    text-transform: uppercase;
+    color: var(--terracota);
+    margin-bottom: 32px;
+  }
+
+  .pagina-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(56px, 16vw, 96px);
+    color: var(--terracota-escuro);
+    line-height: 1;
+    margin-bottom: 28px;
+    letter-spacing: -0.01em;
+  }
+
+  .pagina-hero p {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(18px, 5vw, 22px);
+    color: var(--tinta);
+    max-width: 520px;
+    line-height: 1.6;
+  }
+
+  .pagina-hero p em {
+    color: var(--terracota);
+    font-style: italic;
+  }
+
+  /* ============ ORNAMENTO BOTÂNICO ============ */
+  .ornamento {
+    display: flex;
+    justify-content: center;
+    margin: 32px 0 8px;
+  }
+  .ornamento svg {
+    width: 80px;
+    height: auto;
+    color: var(--terracota);
+    opacity: 0.5;
+  }
+
+  /* ============ FILTROS ============ */
+  .filtros-wrapper {
+    position: sticky;
+    top: 0;
+    background: var(--osso);
+    z-index: 10;
+    padding: 20px 0 16px;
+    border-bottom: 1px solid rgba(139,58,31,0.15);
+  }
+
+  .filtros-grupo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 6px 24px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .filtros-grupo::-webkit-scrollbar { display: none; }
+
+  .filtros-grupo + .filtros-grupo {
+    margin-top: 4px;
+  }
+
+  .filtros-rotulo {
+    flex-shrink: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--pedra);
+    padding-right: 4px;
+    min-width: 78px;
+  }
+
+  .filtros {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .filtro-chip {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border: 1px solid var(--terracota-escuro);
+    background: transparent;
+    color: var(--terracota-escuro);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 100px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+  .filtro-chip:hover { background: rgba(92,36,16,0.05); }
+  .filtro-chip.ativo {
+    background: var(--terracota-escuro);
+    color: var(--osso);
+  }
+
+  /* ============ GRID DE CARDS ============ */
+  .cards-wrapper {
+    padding: 40px 24px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .cards-contador {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--pedra);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  @media (min-width: 720px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .cards-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ============ CARD ============ */
+  .card {
+    background: var(--osso-quente);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(28,26,24,0.12);
+  }
+  .card.escondido { display: none; }
+
+  .card-imagem {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: var(--quartzo);
+  }
+  .card-imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+  .card:hover .card-imagem img { transform: scale(1.05); }
+
+  .card-imagem .placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--pedra) 0%, var(--quartzo) 100%);
+    color: var(--osso-quente);
+  }
+  .card-imagem .placeholder svg {
+    width: 64px;
+    height: 64px;
+    opacity: 0.4;
+  }
+
+  .tag-plataforma {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 6px 14px;
+    background: var(--osso);
+    color: var(--terracota-escuro);
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .tag-plataforma.airbnb {
+    background: var(--terracota);
+    color: var(--osso);
+  }
+
+  .tag-faixa {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    padding: 6px 14px;
+    background: rgba(28,26,24,0.78);
+    backdrop-filter: blur(8px);
+    color: var(--osso);
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .card-conteudo {
+    padding: 24px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .card-localizacao {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--pedra);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-localizacao svg {
+    width: 12px;
+    height: 12px;
+    color: var(--terracota);
+  }
+
+  .card-nome {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 26px;
+    color: var(--terracota-escuro);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    letter-spacing: -0.005em;
+  }
+
+  .card-descricao {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--tinta);
+    margin-bottom: 22px;
+    flex: 1;
+  }
+
+  .card-rodape {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    border-top: 1px solid rgba(139,58,31,0.18);
+    gap: 12px;
+  }
+
+  .card-preco {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .card-preco-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--pedra);
+  }
+  .card-preco-valor {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 17px;
+    color: var(--tinta);
+  }
+  .card-preco-valor em {
+    font-style: italic;
+    color: var(--terracota);
+    font-size: 22px;
+    font-weight: 500;
+  }
+  .card-preco-detalhe {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--pedra);
+    margin-top: 2px;
+  }
+
+  .card-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--terracota-escuro);
+    text-decoration: none;
+    padding: 10px 18px;
+    border: 1px solid var(--terracota-escuro);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+  .card-link:hover {
+    background: var(--terracota-escuro);
+    color: var(--osso);
+  }
+
+  /* ============ BLOCO "MAIS OPÇÕES" ============ */
+  .mais-opcoes {
+    background: var(--terracota-escuro);
+    color: var(--osso);
+    padding: 80px 24px;
+    text-align: center;
+    margin-top: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mais-opcoes::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top right, rgba(217,168,108,0.12) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .mais-opcoes-conteudo {
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .mais-opcoes .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.6em;
+    text-transform: uppercase;
+    color: var(--ocre-claro);
+    margin-bottom: 24px;
+  }
+
+  .mais-opcoes h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(36px, 10vw, 56px);
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+
+  .mais-opcoes p {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 19px;
+    margin-bottom: 40px;
+    opacity: 0.92;
+    line-height: 1.55;
+  }
+
+  .botoes-plataforma {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 520px) {
+    .botoes-plataforma {
+      flex-direction: row;
+      max-width: none;
+      justify-content: center;
+    }
+  }
+
+  .botao-plataforma {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 32px;
+    border: 1px solid var(--osso);
+    color: var(--osso);
+    background: transparent;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  .botao-plataforma:hover {
+    background: var(--osso);
+    color: var(--terracota-escuro);
+  }
+
+  /* ============ RODAPÉ ============ */
+  .rodape {
+    padding: 50px 24px 50px;
+    text-align: center;
+    background: var(--osso);
+    color: var(--pedra);
+  }
+  .rodape a {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--terracota-escuro);
+    text-decoration: none;
+    border-bottom: 1px solid var(--terracota-escuro);
+    padding-bottom: 2px;
+  }
+
+  /* ============ VAZIO ============ */
+  .vazio {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--pedra);
+    display: none;
+  }
+  .vazio.visivel { display: block; }
+
+  /* ============ ANIMAÇÕES ============ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .reveal.ativo {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ MENU SANDUÍCHE ============ -->
+<button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<div class="menu-overlay" id="menuOverlay">
+  <button class="menu-close" id="menuClose" aria-label="Fechar menu"></button>
+  <nav class="menu-nav">
+    <a href="/">início</a>
+    <a href="/programacao">programação</a>
+    <a href="/hospedagens" class="atual">onde ficar</a>
+  </nav>
+  <div class="menu-rodape">10 · 11 julho 2026</div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="pagina-hero">
+  <div class="label reveal">curadoria</div>
+  <h1 class="reveal">onde ficar</h1>
+  <p class="reveal">
+    Alto Paraíso de Goiás é a <em>base ideal</em>: cidade mais próxima do Pura Chapada, com opções pra todos os bolsos. Reuni aqui algumas <em>sugestões</em> — e dois caminhos pra você explorar mais.
+  </p>
+  <div class="ornamento reveal">
+    <svg viewBox="0 0 80 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 12 L30 12" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      <path d="M50 12 L78 12" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      <circle cx="40" cy="12" r="3" stroke="currentColor" stroke-width="1" fill="none"/>
+      <circle cx="40" cy="12" r="0.8" fill="currentColor"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ FILTROS ============ -->
+<div class="filtros-wrapper">
+  <div class="filtros-grupo">
+    <span class="filtros-rotulo">plataforma</span>
+    <div class="filtros" data-grupo="plataforma">
+      <button class="filtro-chip ativo" data-filtro="todos">todas</button>
+      <button class="filtro-chip" data-filtro="booking">Booking</button>
+      <button class="filtro-chip" data-filtro="airbnb">Airbnb</button>
+    </div>
+  </div>
+  <div class="filtros-grupo">
+    <span class="filtros-rotulo">faixa</span>
+    <div class="filtros" data-grupo="faixa">
+      <button class="filtro-chip ativo" data-filtro="todos">todas</button>
+      <button class="filtro-chip" data-filtro="economico">econômico</button>
+      <button class="filtro-chip" data-filtro="intermediario">intermediário</button>
+      <button class="filtro-chip" data-filtro="premium">premium</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ GRID DE CARDS ============ -->
+<div class="cards-wrapper">
+  <div class="cards-contador" id="contador">29 opções selecionadas</div>
+
+  <div class="cards-grid" id="cardsGrid">
+
+    <!-- AMANÁ HOTEL -->
+    <article class="card" data-faixa="premium" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/amana.jpg" alt="Amaná Hotel" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">premium</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Vale das Araras · próximo ao Vale da Lua
+        </div>
+        <h3 class="card-nome">Amaná Hotel</h3>
+        <p class="card-descricao">
+          Doze bangalôs em meio ao cerrado preservado. Arquitetura minimalista, serviço íntimo. Para quem busca <em>luxo discreto</em> e privacidade extrema.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>2.470</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/amana-alto-paraiso-de-goias.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- SABAI POUSADA BOUTIQUE -->
+    <article class="card" data-faixa="premium" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/sabai.jpg" alt="Sabai Pousada Boutique" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">premium</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Vila de São Jorge · frente ao Parque do Preguiça
+        </div>
+        <h3 class="card-nome">Sabai Pousada Boutique</h3>
+        <p class="card-descricao">
+          Design contemporâneo com rooftop de borda infinita. Suítes com piscina privativa, sauna, vista para o cerrado. Para quem busca <em>silêncio sofisticado</em>.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.715</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/sabai-pousada-boutique-sao-jorge.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- VILA ABATON -->
+    <article class="card" data-faixa="intermediario" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/vila-abaton.jpg" alt="Vila Abaton" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · próximo às Cariocas
+        </div>
+        <h3 class="card-nome">Vila Abaton</h3>
+        <p class="card-descricao">
+          Unidades amplas em meio à mata, design clean, ambiente <em>contemplativo</em>. Indicada para quem busca silêncio em escala maior.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.386</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/vila-abaton-alto-paraiso-de-goias.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- PARIKÁ POUSADA -->
+    <article class="card" data-faixa="intermediario" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/parika.jpg" alt="Pariká Pousada" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · acesso a cachoeiras
+        </div>
+        <h3 class="card-nome">Pariká Pousada</h3>
+        <p class="card-descricao">
+          Refúgio tranquilo em meio à natureza, com chalés confortáveis. Boa base para <em>caminhadas curtas</em> e descanso entre passeios.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.162</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/parika-pousada.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- VILA CERRADO -->
+    <article class="card" data-faixa="intermediario" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/vila-cerrado.jpg" alt="Vila Cerrado" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · próximo ao centro
+        </div>
+        <h3 class="card-nome">Vila Cerrado</h3>
+        <p class="card-descricao">
+          Bangalôs entre jardins, spa com massagens, bicicletas gratuitas. <em>Equilíbrio raro</em> entre conforto e simplicidade — bem avaliada pela serenidade.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.089</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/vila-cerrado.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- BAGUÁ BANGALÔS -->
+    <article class="card" data-faixa="intermediario" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/bagua.jpg" alt="Baguá Bangalôs" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Vila de São Jorge · 600m do Parque
+        </div>
+        <h3 class="card-nome">Baguá Bangalôs</h3>
+        <p class="card-descricao">
+          Luxo rústico em São Jorge, com piscina, sauna e bistrô gastronômico. Bangalôs espaçosos, lareira, varanda com rede. <em>Café da manhã memorável.</em>
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.072</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/bagua-bangalos-alto-paraiso-de-goias.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- VILA TOÁ -->
+    <article class="card" data-faixa="intermediario" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/vila-toa.jpg" alt="Vila Toá" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · centro
+        </div>
+        <h3 class="card-nome">Vila Toá</h3>
+        <p class="card-descricao">
+          Pousada de charme indicada para famílias. Ambiente acolhedor, jardim arborizado, equilíbrio entre conforto e <em>preço justo</em>.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>984</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/vila-toa.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CASAS GENGIBRE -->
+    <article class="card" data-faixa="intermediario" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/casas-gengibre.jpg" alt="Casas Gengibre" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · centro
+        </div>
+        <h3 class="card-nome">Casas Gengibre</h3>
+        <p class="card-descricao">
+          Dois quartos em casa completa, ideal para <em>pequenos grupos</em> ou famílias. Cozinha equipada, varanda, autonomia de quem prefere ficar à vontade.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>826</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/casa-gengibre.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- POUSADA RECANTO DA GRANDE PAZ -->
+    <article class="card" data-faixa="intermediario" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/recanto-grande-paz.jpg" alt="Pousada Recanto da Grande Paz" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · área tranquila
+        </div>
+        <h3 class="card-nome">Pousada Recanto da Grande Paz</h3>
+        <p class="card-descricao">
+          Hospedagem simples e <em>acolhedora</em>, com bom custo-benefício. Atendimento familiar, ambiente sereno — ideal para quem prioriza descanso sem frescuras.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>750</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/pousada-recanto-da-grande-paz.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- VILA INCA -->
+    <article class="card" data-faixa="intermediario" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/vila-inca.jpg" alt="Vila Inca" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · próximo à Praça Boa Vista
+        </div>
+        <h3 class="card-nome">Vila Inca</h3>
+        <p class="card-descricao">
+          Seis quartos individualmente decorados, todos com lareira. Sauna, piscina aquecida, sala de jogos. <em>Toque de luxo</em> a preço razoável.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>644</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/vila-inca.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CASA DE SHIVA -->
+    <article class="card" data-faixa="intermediario" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/casa-de-shiva.jpg" alt="Casa de Shiva" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · centro
+        </div>
+        <h3 class="card-nome">Casa de Shiva</h3>
+        <p class="card-descricao">
+          Hospedagem <em>simples e espiritualizada</em>, querida por quem volta sempre à Chapada. Atendimento próximo, preço amigo.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>637</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/casa-de-shiva-alto-paraiso-de-goias.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- POUSADA AURORA -->
+    <article class="card" data-faixa="economico" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/pousada-aurora.jpg" alt="Pousada Aurora" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">econômico</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · centro
+        </div>
+        <h3 class="card-nome">Pousada Aurora</h3>
+        <p class="card-descricao">
+          Flats compactos e bem localizados, pensados para <em>casais</em>. Autonomia de quem prefere uma base prática para explorar a região.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>456</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/flats-aurora-casal.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- ECO POUSADA JARDIM DO ÉDEN -->
+    <article class="card" data-faixa="economico" data-plataforma="booking">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/jardim-do-eden.jpg" alt="Eco Pousada Jardim do Éden" loading="lazy" />
+        <span class="tag-plataforma">Booking</span>
+        <span class="tag-faixa">econômico</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · área natural
+        </div>
+        <h3 class="card-nome">Eco Pousada Jardim do Éden</h3>
+        <p class="card-descricao">
+          Pousada ecológica integrada à mata, perfil <em>rústico e econômico</em>. Para quem quer dormir cercado de cerrado de verdade.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>230</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.booking.com/hotel/br/eco-pousada-jardim-do-eden.pt-br.html?checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CASA TAIPA DE PILÃO -->
+    <article class="card" data-faixa="premium" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-53859154.jpg" alt="Casa Taipa de Pilão" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">premium</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · 10 km do centro
+        </div>
+        <h3 class="card-nome">Casa Taipa de Pilão</h3>
+        <p class="card-descricao">
+          Refúgio amplo para <em>grupos ou famílias</em>, com vista para as montanhas, amanhecer e pôr do sol. Tranquilidade e privacidade garantidas.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>4.817</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/53859154?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CASA MÃO BENTO -->
+    <article class="card" data-faixa="premium" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-1062570603703359912.jpg" alt="Casa Mão Bento" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">premium</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Entre Alto Paraíso e São Jorge
+        </div>
+        <h3 class="card-nome">Casa Mão Bento</h3>
+        <p class="card-descricao">
+          Casa que combina <em>charme rústico e conforto moderno</em>. Duas suítes, espaço gourmet, hidromassagem com vista para a paisagem.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>3.900</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/1062570603703359912?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CASA QUARTZO -->
+    <article class="card" data-faixa="premium" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-46746521.jpg" alt="Casa Quartzo" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">premium</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Vila Xuá · 11 km de Alto Paraíso
+        </div>
+        <h3 class="card-nome">Casa Quartzo</h3>
+        <p class="card-descricao">
+          Casa ampla na Vila Xuá com <em>deck para ver as estrelas</em>, duas suítes, varanda. Acesso curto a um rio com praias de água doce.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>3.200</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/46746521?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CHALÉ 2 TAIPA DE PILÃO -->
+    <article class="card" data-faixa="premium" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-48397172.jpg" alt="Chalé 2 Taipa de Pilão" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">premium</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · 10 km do centro
+        </div>
+        <h3 class="card-nome">Chalé 2 Taipa de Pilão</h3>
+        <p class="card-descricao">
+          A versão irmã do Chalé 1 — mesma <em>imersão no cerrado</em>, mesma jacuzzi, mesma vista. Para casais que vêm em dupla com amigos.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.724</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/48397172?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- BANGALÔ PRANA -->
+    <article class="card" data-faixa="premium" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-930505859757585286.jpg" alt="Bangalô Prana" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">premium</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · imerso na mata
+        </div>
+        <h3 class="card-nome">Bangalô Prana</h3>
+        <p class="card-descricao">
+          Bangalô de vidro e madeira, <em>aconchegante e privativo</em>, rodeado por águas puras e natureza exuberante.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.684</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/930505859757585286?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CHALÉ 1 TAIPA DE PILÃO -->
+    <article class="card" data-faixa="premium" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-48401767.jpg" alt="Chalé 1 Taipa de Pilão" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">premium</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · 10 km do centro
+        </div>
+        <h3 class="card-nome">Chalé 1 Taipa de Pilão</h3>
+        <p class="card-descricao">
+          Chalé com <em>esquadrias de vidro</em> abertas para o cerrado, jacuzzi, deck contínuo e céu estrelado da Chapada como pano de fundo.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.602</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/48401767?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- VILA ÍSIS -->
+    <article class="card" data-faixa="intermediario" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-904959760954303922.jpg" alt="Vila Ísis" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Sertão Zen · Alto Paraíso
+        </div>
+        <h3 class="card-nome">Vila Ísis</h3>
+        <p class="card-descricao">
+          Chalés novíssimos com <em>jacuzzi na varanda</em> e vista para as montanhas. Decoração de bom gosto, acolhimento sem excessos.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.370</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/904959760954303922?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CHALÉ NA MONTANHA -->
+    <article class="card" data-faixa="intermediario" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-1627239313720730409.jpg" alt="Chalé na Montanha" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · acesso a cachoeiras
+        </div>
+        <h3 class="card-nome">Chalé na Montanha</h3>
+        <p class="card-descricao">
+          Chalé com deck amplo, banheiro com <em>vista livre para as montanhas</em>, lençóis 300 fios e acesso a duas cachoeiras.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.300</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/1627239313720730409?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CABANA AROEIRA -->
+    <article class="card" data-faixa="intermediario" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-1605185424164987692.jpg" alt="Cabana Aroeira" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · perto do centro
+        </div>
+        <h3 class="card-nome">Cabana Aroeira</h3>
+        <p class="card-descricao">
+          Cabana com <em>jacuzzi e fogueira</em>, cama queen, jardim amplo, cozinha equipada. Bem-estar concentrado num só lugar.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.184</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/1605185424164987692?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CASA PÉROLA -->
+    <article class="card" data-faixa="intermediario" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-48877705.jpg" alt="Casa Pérola" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso
+        </div>
+        <h3 class="card-nome">Casa Pérola</h3>
+        <p class="card-descricao">
+          Casa arejada e aconchegante, com <em>ofurô privativo</em> de hidromassagem e cromoterapia. Garagem coberta, conforto pleno.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>1.100</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/48877705?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- MIRANTE TRAILER HOME -->
+    <article class="card" data-faixa="intermediario" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-1126719357590775363.jpg" alt="Mirante Trailer Home" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Morro da Boa Vista · 12 km de Alto Paraíso
+        </div>
+        <h3 class="card-nome">Mirante Trailer Home</h3>
+        <p class="card-descricao">
+          Trailer com <em>vista panorâmica</em> do Morro da Boa Vista. Para quem procura uma experiência diferente, em contato direto com a paisagem.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>996</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/1126719357590775363?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- NATUREZA RÚSTICA PERTO DAS CACHOEIRAS -->
+    <article class="card" data-faixa="intermediario" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-1390602216128291364.jpg" alt="Natureza Rústica Perto das Cachoeiras" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · perto das cachoeiras
+        </div>
+        <h3 class="card-nome">Natureza Rústica Perto das Cachoeiras</h3>
+        <p class="card-descricao">
+          Chalé novinho cercado pela <em>natureza ancestral</em> do cerrado, a poucos minutos das principais cachoeiras da Chapada.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>870</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/1390602216128291364?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- RECANTO CARACOL -->
+    <article class="card" data-faixa="intermediario" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-1572553773539914396.jpg" alt="Recanto Caracol" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · centro
+        </div>
+        <h3 class="card-nome">Recanto Caracol</h3>
+        <p class="card-descricao">
+          Espaço charmoso com <em>fácil acesso</em> a lojas e restaurantes. Para quem prefere ficar perto da vida do centro.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>697</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/1572553773539914396?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- CHALÉ EM ALTO PARAÍSO -->
+    <article class="card" data-faixa="intermediario" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-1223994997058296352.jpg" alt="Chalé em Alto Paraíso" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">intermediário</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Entre Alto Paraíso e São Jorge
+        </div>
+        <h3 class="card-nome">Chalé em Alto Paraíso</h3>
+        <p class="card-descricao">
+          Chalé com cozinha e <em>vista privilegiada</em>, no embalo dos sons da natureza. Acomoda até quatro pessoas confortavelmente.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>650</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/1223994997058296352?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- A TABERNA CASA 3 -->
+    <article class="card" data-faixa="economico" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-18439548.jpg" alt="A Taberna Casa 3" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">econômico</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · 900m da av. turística
+        </div>
+        <h3 class="card-nome">A Taberna Casa 3</h3>
+        <p class="card-descricao">
+          Vista para as montanhas em ambiente <em>tranquilo e exuberante</em>. Atendimento caloroso para quem busca conexão com o cerrado.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>351</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/18439548?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- A TABERNA CASA 1 -->
+    <article class="card" data-faixa="economico" data-plataforma="airbnb">
+      <div class="card-imagem">
+        <img src="/assets/hospedagens/ab-18411911.jpg" alt="A Taberna Casa 1" loading="lazy" />
+        <span class="tag-plataforma airbnb">Airbnb</span>
+        <span class="tag-faixa">econômico</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="card-localizacao">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M6 1 C3.5 1 1.5 3 1.5 5.5 C1.5 8.5 6 11 6 11 C6 11 10.5 8.5 10.5 5.5 C10.5 3 8.5 1 6 1 Z" stroke="currentColor" stroke-width="1" fill="none"/><circle cx="6" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1" fill="none"/></svg>
+          Alto Paraíso · 900m da av. turística
+        </div>
+        <h3 class="card-nome">A Taberna Casa 1</h3>
+        <p class="card-descricao">
+          Vista para as montanhas em ambiente <em>tranquilo e exuberante</em>. A versão menor da Taberna — perfeita para casais que querem economizar.
+        </p>
+        <div class="card-rodape">
+          <div class="card-preco">
+            <span class="card-preco-label">A partir de</span>
+            <span class="card-preco-valor">R$ <em>322</em><span class="card-preco-detalhe">/noite · 2 pessoas</span></span>
+          </div>
+          <a href="https://www.airbnb.com.br/rooms/18411911?adults=2&check_in=2026-07-10&check_out=2026-07-12" target="_blank" rel="noopener" class="card-link">ver no site</a>
+        </div>
+      </div>
+    </article>
+    <div class="vazio" id="vazio">Nenhuma opção encontrada com esses filtros.</div>
+
+  </div>
+</div>
+
+<!-- ============ MAIS OPÇÕES ============ -->
+<section class="mais-opcoes">
+  <div class="mais-opcoes-conteudo">
+    <div class="label">não encontrou o seu lugar?</div>
+    <h2>busque mais opções</h2>
+    <p>
+      Filtramos para você as buscas em Alto Paraíso de Goiás com as datas do evento. <em>Explore à vontade.</em>
+    </p>
+    <div class="botoes-plataforma">
+      <a href="https://www.booking.com/searchresults.pt-br.html?dest_id=-624424&dest_type=city&checkin=2026-07-10&checkout=2026-07-12&group_adults=2&no_rooms=1" target="_blank" rel="noopener" class="botao-plataforma">ver tudo no Booking</a>
+      <a href="https://www.airbnb.com.br/s/Alto-Para%C3%ADso-de-Goi%C3%A1s--GO/homes?checkin=2026-07-10&checkout=2026-07-12&adults=2" target="_blank" rel="noopener" class="botao-plataforma">ver tudo no Airbnb</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RODAPÉ ============ -->
+<footer class="rodape">
+  <a href="/">voltar ao início</a>
+</footer>
+
+<script>
+  // ============ MENU SANDUÍCHE ============
+  const menuToggle = document.getElementById('menuToggle');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const menuClose = document.getElementById('menuClose');
+
+  function abrirMenu() {
+    menuOverlay.classList.add('aberto');
+    document.body.classList.add('menu-aberto');
+  }
+  function fecharMenu() {
+    menuOverlay.classList.remove('aberto');
+    document.body.classList.remove('menu-aberto');
+  }
+
+  menuToggle.addEventListener('click', abrirMenu);
+  menuClose.addEventListener('click', fecharMenu);
+  menuOverlay.addEventListener('click', (e) => {
+    if (e.target === menuOverlay) fecharMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') fecharMenu();
+  });
+
+  // ============ FILTROS ============
+  const cards = document.querySelectorAll('.card');
+  const contador = document.getElementById('contador');
+  const vazio = document.getElementById('vazio');
+  const estado = { plataforma: 'todos', faixa: 'todos' };
+
+  function aplicarFiltros() {
+    let visiveis = 0;
+    cards.forEach(card => {
+      const okPlataforma = estado.plataforma === 'todos' || card.dataset.plataforma === estado.plataforma;
+      // Cards Airbnb (que ainda não têm faixa definida) só aparecem quando faixa === 'todos'
+      const temFaixa = !!card.dataset.faixa;
+      const okFaixa = estado.faixa === 'todos' || (temFaixa && card.dataset.faixa === estado.faixa);
+      if (okPlataforma && okFaixa) {
+        card.classList.remove('escondido');
+        visiveis++;
+      } else {
+        card.classList.add('escondido');
+      }
+    });
+    const sufixo = visiveis === 1 ? 'opção encontrada' : 'opções encontradas';
+    contador.textContent = `${visiveis} ${sufixo}`;
+    vazio.classList.toggle('visivel', visiveis === 0);
+  }
+
+  document.querySelectorAll('.filtros').forEach(grupoEl => {
+    const grupo = grupoEl.dataset.grupo; // 'plataforma' ou 'faixa'
+    grupoEl.querySelectorAll('.filtro-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        grupoEl.querySelectorAll('.filtro-chip').forEach(c => c.classList.remove('ativo'));
+        chip.classList.add('ativo');
+        estado[grupo] = chip.dataset.filtro;
+        aplicarFiltros();
+      });
+    });
+  });
+
+  // ============ REVEAL ON SCROLL ============
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('ativo');
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Auto-ativar reveals já visíveis no carregamento
+  requestAnimationFrame(() => {
+    reveals.forEach(r => {
+      const rect = r.getBoundingClientRect();
+      if (rect.top < window.innerHeight) r.classList.add('ativo');
+    });
+  });
+</script>
+
+</body>
+</html>

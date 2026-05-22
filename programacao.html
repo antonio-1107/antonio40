@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antonio 40 · Programação</title>
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Antonio 40 · Programação">
+<meta property="og:description" content="Dois dias na Chapada dos Veadeiros. A programação completa da celebração de 40 anos do Antonio.">
+<meta property="og:image" content="https://antonio40.com/preview-og.jpg">
+<meta property="og:locale" content="pt_BR">
+<meta name="description" content="Programação completa da celebração de 40 anos do Antonio na Chapada dos Veadeiros.">
+<meta name="theme-color" content="#F2EAD8">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --terracota: #8B3A1F;
+    --terracota-escuro: #5C2410;
+    --terracota-noite: #2A1006;
+    --ocre: #C28840;
+    --ocre-claro: #D9A86C;
+    --ocre-suave: #E8C898;
+    --musgo-escuro: #2A3320;
+    --noite-cosmica: #0A0E1A;
+    --osso: #F2EAD8;
+    --osso-quente: #E8DCC4;
+    --pedra: #8C7A5C;
+    --tinta: #1A1410;
+    --quartzo: #D4C4B0;
+    --carvao: #1C1A18;
+    --azul-petroleo: #0E2329;
+    --verde-dourado: #2A3517;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--osso);
+    color: var(--tinta);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .serifa { font-family: 'Cormorant Garamond', serif; }
+
+  /* ============ MENU SANDUÍCHE ============ */
+  .menu-toggle {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 8px;
+    color: var(--terracota-escuro);
+    transition: opacity 0.3s ease;
+  }
+
+  .menu-toggle span {
+    display: block;
+    height: 1.5px;
+    background: currentColor;
+    transition: all 0.4s ease;
+  }
+  .menu-toggle span:nth-child(1) { width: 28px; }
+  .menu-toggle span:nth-child(2) { width: 22px; }
+  .menu-toggle span:nth-child(3) { width: 28px; }
+  .menu-toggle:hover span:nth-child(2) { width: 28px; }
+
+  body.menu-aberto .menu-toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--terracota-noite);
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .menu-overlay.aberto {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .menu-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at top, rgba(139,58,31,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(42,16,6,0) 0%, var(--terracota-noite) 70%);
+    pointer-events: none;
+  }
+
+  .menu-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--osso);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-close::before, .menu-close::after {
+    content: '';
+    position: absolute;
+    width: 28px;
+    height: 1.5px;
+    background: currentColor;
+  }
+  .menu-close::before { transform: rotate(45deg); }
+  .menu-close::after { transform: rotate(-45deg); }
+
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .menu-nav a {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(40px, 9vw, 64px);
+    color: var(--osso);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+  }
+  .menu-nav a:hover { opacity: 1; }
+  .menu-nav a.atual {
+    color: var(--ocre-claro);
+    opacity: 1;
+  }
+  .menu-rodape {
+    position: absolute;
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--osso);
+    opacity: 0.4;
+  }
+
+  body.menu-aberto { overflow: hidden; }
+
+  /* ============ HERO ============ */
+  .pagina-hero {
+    min-height: 60vh;
+    background: var(--osso-quente);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pagina-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--terracota-escuro));
+    opacity: 0.3;
+  }
+
+  .pagina-hero .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.6em;
+    text-transform: uppercase;
+    color: var(--terracota);
+    margin-bottom: 32px;
+  }
+  .pagina-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(56px, 16vw, 96px);
+    color: var(--terracota-escuro);
+    line-height: 1;
+    margin-bottom: 28px;
+    letter-spacing: -0.01em;
+  }
+  .pagina-hero p {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(18px, 5vw, 22px);
+    color: var(--tinta);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+  .pagina-hero p em {
+    color: var(--terracota);
+    font-style: italic;
+  }
+
+  .ornamento {
+    display: flex;
+    justify-content: center;
+    margin: 32px 0 8px;
+  }
+  .ornamento svg {
+    width: 80px;
+    height: auto;
+    color: var(--terracota);
+    opacity: 0.5;
+  }
+
+  /* ============ DIA / SEÇÃO ============ */
+  .dia {
+    padding: 80px 24px 40px;
+    position: relative;
+    overflow-x: clip;
+  }
+
+  .dia-sexta { background: var(--osso); }
+  .dia-sabado { background: var(--osso-quente); padding-bottom: 0; }
+  .dia-domingo {
+    background: var(--osso);
+    padding-top: 100px;
+    padding-bottom: 80px;
+  }
+
+  .dia-header {
+    text-align: center;
+    margin-bottom: 60px;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .dia-data {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(20px, 5vw, 24px);
+    color: var(--terracota);
+    margin-bottom: 14px;
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .dia-data::before,
+  .dia-data::after {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--terracota);
+    opacity: 0.5;
+  }
+
+  .dia-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(44px, 13vw, 72px);
+    color: var(--terracota-escuro);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .dia-subtitulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(17px, 4.5vw, 20px);
+    color: var(--tinta);
+    opacity: 0.75;
+    line-height: 1.5;
+  }
+
+  /* ============ TIMELINE ============ */
+  .timeline {
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 36px;
+    top: 12px;
+    bottom: 12px;
+    width: 1px;
+    background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(139,58,31,0.3) 12%,
+      rgba(139,58,31,0.3) 88%,
+      transparent 100%);
+  }
+
+  @media (min-width: 640px) {
+    .timeline::before { left: 60px; }
+  }
+
+  .evento {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 22px 0;
+    position: relative;
+  }
+
+  @media (min-width: 640px) {
+    .evento { gap: 36px; padding: 28px 0; }
+  }
+
+  .evento-icone {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--osso-quente);
+    border: 1px solid rgba(139,58,31,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--terracota-escuro);
+    position: relative;
+    z-index: 1;
+  }
+
+  .dia-sabado .evento-icone { background: var(--osso); }
+
+  @media (min-width: 640px) {
+    .evento-icone {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .evento-icone svg {
+    width: 36px;
+    height: 36px;
+  }
+  @media (min-width: 640px) {
+    .evento-icone svg { width: 56px; height: 56px; }
+  }
+
+  .evento-conteudo {
+    flex: 1;
+    padding-top: 6px;
+  }
+
+  .evento-hora {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(18px, 4.5vw, 22px);
+    color: var(--terracota);
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+
+  .evento-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(26px, 7vw, 38px);
+    color: var(--terracota-escuro);
+    line-height: 1.1;
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+
+  .evento-local {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--pedra);
+    margin-bottom: 14px;
+  }
+
+  .evento-descricao {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--tinta);
+    opacity: 0.85;
+  }
+
+  .evento-descricao em {
+    color: var(--terracota);
+    font-style: italic;
+  }
+
+  .cortesia-tag {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: var(--terracota-escuro);
+    color: var(--osso);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    border-radius: 100px;
+  }
+
+  /* ============ EVENTO FESTA (DENTRO DA TIMELINE) ============ */
+  /* Faixa terracota como pano de fundo só atrás do item da festa */
+  .evento.evento-festa {
+    position: relative;
+    margin-top: 28px;
+  }
+
+  .evento.evento-festa::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 50vw);
+    width: 100vw;
+    background: var(--terracota-escuro);
+    z-index: 0;
+  }
+
+  .evento.evento-festa::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 50vw);
+    width: 100vw;
+    background:
+      radial-gradient(ellipse at top right, rgba(217,168,108,0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(194,136,64,0.10) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .evento.evento-festa > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .evento.evento-festa {
+    padding: 56px 0 60px;
+  }
+
+  /* Ícone mantém o mesmo design dos outros eventos */
+  .evento.evento-festa .evento-icone {
+    background: var(--terracota-escuro);
+    border-color: var(--ocre-claro);
+    color: var(--ocre-claro);
+  }
+
+  /* Cores invertidas para o conteúdo sobre fundo terracota */
+  .evento.evento-festa .evento-hora { color: var(--ocre-claro); }
+  .evento.evento-festa .evento-titulo { color: var(--osso); }
+  .evento.evento-festa .evento-local { color: var(--ocre-suave); opacity: 0.8; }
+  .evento.evento-festa .evento-descricao {
+    color: var(--osso);
+    opacity: 0.92;
+  }
+  .evento.evento-festa .evento-descricao em { color: var(--ocre-claro); }
+
+  /* Conexão da linha vertical com a faixa */
+  .timeline.timeline-com-festa::before {
+    /* Estende a linha até a base da festa */
+    bottom: 60px;
+  }
+
+  /* ============ RODAPÉ ============ */
+  .rodape {
+    padding: 50px 24px 50px;
+    text-align: center;
+    background: var(--osso);
+    color: var(--pedra);
+  }
+  .rodape a {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--terracota-escuro);
+    text-decoration: none;
+    border-bottom: 1px solid var(--terracota-escuro);
+    padding-bottom: 2px;
+  }
+
+  /* ============ ANIMAÇÕES ============ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .reveal.ativo {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ MENU SANDUÍCHE ============ -->
+<button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<div class="menu-overlay" id="menuOverlay">
+  <button class="menu-close" id="menuClose" aria-label="Fechar menu"></button>
+  <nav class="menu-nav">
+    <a href="/">início</a>
+    <a href="/programacao" class="atual">programação</a>
+    <a href="/hospedagens">onde ficar</a>
+  </nav>
+  <div class="menu-rodape">10 · 11 julho 2026</div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="pagina-hero">
+  <h1 class="reveal">programação</h1>
+  <p class="reveal">
+    Dois dias entre <em>cristais, cachoeiras, estrelas</em> e muita celebração.
+  </p>
+  <div class="ornamento reveal">
+    <svg viewBox="0 0 80 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 12 L30 12" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      <path d="M50 12 L78 12" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+      <circle cx="40" cy="12" r="3" stroke="currentColor" stroke-width="1" fill="none"/>
+      <circle cx="40" cy="12" r="0.8" fill="currentColor"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ SEXTA ============ -->
+<section class="dia dia-sexta">
+  <div class="dia-header">
+    <div class="dia-data reveal">sexta · 10 de julho</div>
+    <h2 class="dia-titulo reveal">a chegada</h2>
+    <p class="dia-subtitulo reveal">
+      Um encontro <em>sem pressa</em>, para reaproximar quem chegou de longe.
+    </p>
+  </div>
+
+  <div class="timeline">
+    <div class="evento reveal">
+      <div class="evento-icone">
+        <!-- ÍCONE BAR / LUA -->
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M36 12 C29 12 24 17 24 24 C24 31 29 36 36 36 C39 36 41 35 43 34 C40 38 36 40 32 40 C24 40 18 34 18 26 C18 18 24 12 32 12 C33 12 35 12 36 12 Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+          <circle cx="46" cy="14" r="0.8" fill="currentColor"/>
+          <circle cx="42" cy="20" r="0.6" fill="currentColor"/>
+          <circle cx="48" cy="24" r="0.5" fill="currentColor"/>
+          <path d="M14 46 L42 46" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="evento-conteudo">
+        <div class="evento-hora">19h</div>
+        <h3 class="evento-titulo">Bar do Pelé</h3>
+        <div class="evento-local">Vila de São Jorge</div>
+        <p class="evento-descricao">
+          Uma noite para <em>chegar com calma</em>. Reencontros, primeiros brindes, o céu já estrelado da Chapada.
+        </p>
+        <div class="cortesia-tag">cortesia do aniversariante</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SÁBADO ============ -->
+<section class="dia dia-sabado">
+  <div class="dia-header">
+    <div class="dia-data reveal">sábado · 11 de julho</div>
+    <h2 class="dia-titulo reveal">o grande dia</h2>
+    <p class="dia-subtitulo reveal">
+      Manhã na água, tarde livre, noite <em>nossa</em>.
+    </p>
+  </div>
+
+  <div class="timeline">
+
+    <div class="evento reveal">
+      <div class="evento-icone">
+        <!-- ÍCONE CACHOEIRA -->
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 18 L18 10 L26 18 L34 12 L42 18 L46 16" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+          <path d="M14 18 L14 38 Q14 44 18 44 Q22 44 22 38 L22 22" stroke="currentColor" stroke-width="1.2" fill="none"/>
+          <path d="M22 18 L22 32 Q22 38 26 38 Q30 38 30 32 L30 22" stroke="currentColor" stroke-width="1.2" fill="none"/>
+          <path d="M30 18 L30 36 Q30 42 34 42 Q38 42 38 36 L38 22" stroke="currentColor" stroke-width="1.2" fill="none"/>
+          <path d="M38 18 L38 32 Q38 36 42 36 Q46 36 46 32 L46 22" stroke="currentColor" stroke-width="1.2" fill="none"/>
+          <path d="M8 50 Q14 46 20 50 T32 50 T44 50 T50 50" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>
+      </div>
+      <div class="evento-conteudo">
+        <div class="evento-hora">manhã · 9h</div>
+        <h3 class="evento-titulo">cachoeira</h3>
+        <div class="evento-local">a confirmar</div>
+        <p class="evento-descricao">
+          Um banho na <em>água ancestral</em> da Chapada. O local exato será informado na sua chegada — vamos garantir que seja um lugar tranquilo, fácil e nosso por algumas horas.
+        </p>
+      </div>
+    </div>
+
+    <div class="evento reveal">
+      <div class="evento-icone">
+        <!-- ÍCONE ALMOÇO LIVRE / SOL -->
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="28" cy="28" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M28 10 L28 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M28 42 L28 46" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M10 28 L14 28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M42 28 L46 28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M15.5 15.5 L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M38 38 L40.5 40.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M15.5 40.5 L18 38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M38 18 L40.5 15.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="evento-conteudo">
+        <div class="evento-hora">13h</div>
+        <h3 class="evento-titulo">tarde livre</h3>
+        <div class="evento-local">à sua escolha</div>
+        <p class="evento-descricao">
+          Almoçar onde quiser, descansar, passear pela Vila. <em>Recarregue.</em> A noite é longa.
+        </p>
+      </div>
+    </div>
+
+    <!-- FESTA — quarto item da timeline, com faixa terracota -->
+    <div class="evento evento-festa reveal">
+      <div class="evento-icone">
+        <!-- ÍCONE FOGO / CHAMA -->
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M28 8 C28 8 19 17 19 27 C19 36 23 43 28 43 C33 43 37 36 37 27 C37 23 35 20 34 19 C34 23 32 26 30 26 C28 26 28 23 28 20 C28 16 28 8 28 8 Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+          <path d="M16 50 L40 50" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+      </div>
+      <div class="evento-conteudo">
+        <div class="evento-hora">a partir das 16h30</div>
+        <h3 class="evento-titulo">Antonio 40</h3>
+        <div class="evento-local">Local · Pura Chapada</div>
+        <p class="evento-descricao">
+          A celebração principal — <em>da tarde até 1h da manhã</em>.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ DOMINGO ============ -->
+<section class="dia dia-domingo">
+  <div class="dia-header">
+    <div class="dia-data reveal">domingo · 12 de julho</div>
+    <h2 class="dia-titulo reveal">dia livre</h2>
+    <p class="dia-subtitulo reveal">
+      Sem programação oficial. <em>Se possível, aproveite o dia</em> para conhecer um pouco mais da magia da Chapada dos Veadeiros.
+    </p>
+  </div>
+</section>
+
+<!-- ============ RODAPÉ ============ -->
+<footer class="rodape">
+  <a href="/">voltar ao início</a>
+</footer>
+
+<script>
+  // ============ MENU SANDUÍCHE ============
+  const menuToggle = document.getElementById('menuToggle');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const menuClose = document.getElementById('menuClose');
+
+  function abrirMenu() {
+    menuOverlay.classList.add('aberto');
+    document.body.classList.add('menu-aberto');
+  }
+  function fecharMenu() {
+    menuOverlay.classList.remove('aberto');
+    document.body.classList.remove('menu-aberto');
+  }
+
+  menuToggle.addEventListener('click', abrirMenu);
+  menuClose.addEventListener('click', fecharMenu);
+  menuOverlay.addEventListener('click', (e) => {
+    if (e.target === menuOverlay) fecharMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') fecharMenu();
+  });
+
+  // ============ REVEAL ON SCROLL ============
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('ativo');
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(r => obs.observe(r));
+
+  requestAnimationFrame(() => {
+    reveals.forEach(r => {
+      const rect = r.getBoundingClientRect();
+      if (rect.top < window.innerHeight) r.classList.add('ativo');
+    });
+  });
+</script>
+
+</body>
+</html>
