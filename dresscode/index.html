@@ -586,9 +586,15 @@ const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) entry.target.classList.add('visible');
   });
-}, { threshold: 0.2 });
+}, { threshold: 0.05, rootMargin: '0px 0px -5% 0px' });
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// Rede de segurança: se o observer não disparar (bug mobile + scroll-snap),
+// revela tudo depois de 1s para o conteúdo nunca ficar preso invisível.
+setTimeout(() => {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+}, 1000);
 
 const scrollHint = document.getElementById('scrollHint');
 const sections = document.querySelectorAll('section');
