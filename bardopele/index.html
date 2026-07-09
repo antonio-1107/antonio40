@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>o Bar do Pelé · 40 antonio</title>
+<meta name="description" content="A esquina que juntava todo mundo antes de São Jorge ser São Jorge.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
+
+:root {
+  --osso:#F2EAD8; --osso-quente:#E8DCC4; --tinta:#1A1410;
+  --terracota:#8B3A1F; --terracota-escuro:#5C2410;
+  --noite:#0A0E1A; --carvao:#1C1A18; --pedra:#8C7A5C;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--osso); color:var(--tinta);
+  font-family:'Cormorant Garamond', Georgia, serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+
+/* back link */
+.voltar {
+  position:fixed; top:22px; left:24px; z-index:20;
+  font-family:'Inter', sans-serif; font-weight:400; font-size:10px;
+  letter-spacing:0.34em; text-transform:uppercase; text-decoration:none;
+  color:var(--terracota); mix-blend-mode:multiply; transition:opacity .6s;
+}
+.voltar.on-dark { color:var(--osso); mix-blend-mode:normal; opacity:0.75; }
+
+section { padding:14vh 28px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+.wrap { width:100%; max-width:600px; }
+
+.eyebrow {
+  font-family:'Inter', sans-serif; font-weight:400; font-size:10px;
+  letter-spacing:0.42em; text-transform:uppercase; color:var(--pedra);
+  padding-left:0.42em; margin-bottom:28px;
+}
+h1 {
+  font-weight:300; font-style:italic; font-size:clamp(52px, 16vw, 88px);
+  line-height:0.98; color:var(--terracota); margin-bottom:26px;
+}
+.hook {
+  font-weight:400; font-style:italic; font-size:clamp(20px,5.4vw,26px);
+  line-height:1.4; color:var(--tinta); max-width:22ch; margin:0 auto;
+}
+
+.label {
+  font-family:'Inter', sans-serif; font-weight:400; font-size:10px;
+  letter-spacing:0.4em; text-transform:uppercase; color:var(--terracota);
+  margin-bottom:26px;
+}
+.label::before, .label::after { content:"·"; margin:0 0.7em; opacity:0.7; }
+
+p.body {
+  font-weight:300; font-size:clamp(21px,5.4vw,27px); line-height:1.62;
+  color:var(--tinta);
+}
+p.body em { font-style:italic; font-weight:400; color:var(--terracota-escuro); }
+
+/* dark closing */
+.noite { background:var(--noite); color:var(--osso); }
+.noite p.body { color:var(--osso); }
+.noite p.body em { color:var(--ocre-claro, #D9A86C); }
+.noite .label { color:var(--ocre-claro, #D9A86C); }
+
+.fecho { background:var(--noite); padding-top:6vh; padding-bottom:16vh; }
+.fecho .line {
+  font-weight:300; font-style:italic; font-size:clamp(23px,6vw,30px);
+  line-height:1.4; color:var(--osso); margin-bottom:44px; max-width:20ch;
+  margin-left:auto; margin-right:auto;
+}
+.logo-svg { width:min(200px,52vw); height:auto; color:var(--osso);
+  filter:drop-shadow(0 2px 18px rgba(0,0,0,0.35)); display:block; margin:0 auto 30px; }
+.fecho .quando {
+  font-family:'Inter', sans-serif; font-weight:400; font-size:11px;
+  letter-spacing:0.34em; text-transform:uppercase; color:var(--pedra);
+}
+
+/* reveal on scroll */
+.reveal { opacity:0; transform:translateY(38px); transition:opacity 1.4s ease, transform 1.4s ease; }
+.reveal.vis { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<a class="voltar" href="https://antonio40.com">← 40 antonio</a>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow reveal">Vila de São Jorge · Chapada dos Veadeiros</div>
+    <h1 class="reveal">o Bar<br>do Pelé</h1>
+    <p class="hook reveal">Antes de São Jorge, foi Baixa. Antes das trilhas, foi garimpo.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="label reveal">a baixa</div>
+    <p class="body reveal">Nos anos 1950, isto aqui nem tinha esse nome. Era a <em>Baixa</em>: um arraial de garimpeiros atrás do cristal de quartzo que o mundo, recém-saído da guerra, disputava. Ruas de terra e veios de pedra acesos na serra.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="label reveal">a virada</div>
+    <p class="body reveal">Então o cristal sintético chegou, o preço despencou, e a Baixa quase virou fantasma. Quem ficou trocou a picareta pela trilha — o mesmo caminho que levava ao garimpo passou a levar às cachoeiras. A vila ganhou um santo, um nome novo e uma vida nova.</p>
+  </div>
+</section>
+
+<section class="noite">
+  <div class="wrap">
+    <div class="label reveal">o point</div>
+    <p class="body reveal">No fim da rua, na esquina, ficou o lugar onde todo mundo se encontra: o <em>Bar do Pelé</em>. Cerveja gelada, pastel, música e a pracinha lá fora. Tradição de São Jorge do tipo que não se explica — a gente senta e fica.</p>
+  </div>
+</section>
+
+<section class="fecho">
+  <div class="wrap">
+    <p class="line reveal">E sexta à noite, é onde a gente começa.</p>
+    <div class="reveal"><svg class="logo-svg" version="1.1" viewBox="345 195 265 130" fill="none" stroke="none" stroke-linecap="square" stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="m468.5251 235.10416l0.28125 1.796875l-19.484375 27.59375l-0.0625 -1.109375l21.21875 0q2.84375 0 3.59375 -0.796875q0.765625 -0.796875 1.046875 -2.734375l1.171875 0q0 3.390625 0.0625 5.203125q0.078125 1.796875 0.21875 3.328125q-0.484375 -0.140625 -1.5625 -0.171875q-1.0625 -0.046875 -2.53125 -0.109375q-1.453125 -0.078125 -3.046875 -0.078125q-1.59375 0 -3.1875 0l-20.25 0l0 -1.453125l22.53125 -31.46875zm1.109375 0l0 46.453125l-5.546875 0l0 -39.109375l4.4375 -7.34375l1.109375 0z" fill-rule="nonzero"/><path fill="currentColor" d="m434.23178 308.49274l3.78125 -10.265625l1.3125 0l3.765625 10.265625l-1.3125 0l-3.125 -8.71875l0 0l-3.125 8.71875l-1.296875 0zm1.734375 -2.640625l0.34375 -1.0l4.65625 0l0.34375 1.0l-5.34375 0zm12.552246 2.640625l0 -10.265625l1.234375 0l5.46875 8.234375l0 0l0 -8.234375l1.234375 0l0 10.265625l-1.234375 0l-5.46875 -8.21875l0 0l0 8.21875l-1.234375 0zm16.432312 0l0 -9.25l-3.0625 0l0 -1.015625l7.359375 0l0 1.015625l-3.0625 0l0 9.25l-1.234375 0zm14.292633 0.171875q-1.484375 0 -2.609375 -0.65625q-1.109375 -0.671875 -1.734375 -1.859375q-0.625 -1.203125 -0.625 -2.78125q0 -1.578125 0.625 -2.765625q0.625 -1.203125 1.734375 -1.875q1.125 -0.671875 2.609375 -0.671875q1.515625 0 2.625 0.671875q1.109375 0.671875 1.734375 1.875q0.625 1.1875 0.625 2.765625q0 1.578125 -0.625 2.78125q-0.625 1.1875 -1.734375 1.859375q-1.109375 0.65625 -2.625 0.65625zm0 -1.078125q1.109375 0 1.953125 -0.5q0.84375 -0.515625 1.296875 -1.453125q0.46875 -0.953125 0.46875 -2.265625q0 -1.328125 -0.46875 -2.265625q-0.453125 -0.953125 -1.296875 -1.453125q-0.84375 -0.5 -1.953125 -0.5q-1.09375 0 -1.9375 0.5q-0.84375 0.5 -1.3125 1.453125q-0.453125 0.9375 -0.453125 2.265625q0 1.3125 0.453125 2.265625q0.46875 0.9375 1.3125 1.453125q0.84375 0.5 1.9375 0.5zm10.664429 0.90625l0 -10.265625l1.234375 0l5.46875 8.234375l0 0l0 -8.234375l1.234375 0l0 10.265625l-1.234375 0l-5.46875 -8.21875l0 0l0 8.21875l-1.234375 0zm14.026093 0l0 -10.265625l1.234375 0l0 10.265625l-1.234375 0zm11.9062805 0.171875q-1.484375 0 -2.609375 -0.65625q-1.109375 -0.671875 -1.734375 -1.859375q-0.625 -1.203125 -0.625 -2.78125q0 -1.578125 0.625 -2.765625q0.625 -1.203125 1.734375 -1.875q1.125 -0.671875 2.609375 -0.671875q1.515625 0 2.625 0.671875q1.109375 0.671875 1.734375 1.875q0.625 1.1875 0.625 2.765625q0 1.578125 -0.625 2.78125q-0.625 1.1875 -1.734375 1.859375q-1.109375 0.65625 -2.625 0.65625zm0 -1.078125q1.109375 0 1.953125 -0.5q0.84375 -0.515625 1.296875 -1.453125q0.46875 -0.953125 0.46875 -2.265625q0 -1.328125 -0.46875 -2.265625q-0.453125 -0.953125 -1.296875 -1.453125q-0.84375 -0.5 -1.953125 -0.5q-1.09375 0 -1.9375 0.5q-0.84375 0.5 -1.3125 1.453125q-0.453125 0.9375 -0.453125 2.265625q0 1.3125 0.453125 2.265625q0.46875 0.9375 1.3125 1.453125q0.84375 0.5 1.9375 0.5z" fill-rule="nonzero"/><path fill="currentColor" d="m491.00833 237.5685q4.921875 0 8.703125 2.25q3.78125 2.25 5.921875 6.34375q2.15625 4.09375 2.15625 9.640625q0 5.5468597 -2.21875 9.95311q-2.21875 4.390625 -6.140625 6.921875q-3.90625 2.53125 -9.1875 2.53125q-4.78125 0 -8.59375 -2.25q-3.8125 -2.25 -6.0 -6.375q-2.171875 -4.125 -2.171875 -9.671875q0 -5.4843597 2.171875 -9.843735q2.1875 -4.375 6.140625 -6.9375q3.953125 -2.5625 9.21875 -2.5625zm-0.625 1.25q-4.4375 0 -7.3125 4.71875q-2.875 4.703125 -2.875 13.156235q0 6.25 1.453125 10.03125q1.453125 3.765625 3.90625 5.5q2.46875 1.734375 5.3125 1.734375q4.515625 0 7.359375 -4.75q2.84375 -4.75 2.84375 -13.203125q0 -6.2343597 -1.46875 -10.01561q-1.453125 -3.78125 -3.875 -5.46875q-2.421875 -1.703125 -5.34375 -1.703125z" fill-rule="nonzero"/></svg></div>
+    <div class="quando reveal">10 de julho · Bar do Pelé · São Jorge</div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); } });
+    }, { threshold:0.05, rootMargin:'0px 0px -8% 0px' });
+    els.forEach(function(el){ io.observe(el); });
+    // safety: force-reveal after 2.4s
+    setTimeout(function(){ els.forEach(function(el){ el.classList.add('vis'); }); }, 2400);
+  } else {
+    els.forEach(function(el){ el.classList.add('vis'); });
+  }
+  // back-link contrast over dark sections
+  var link = document.querySelector('.voltar');
+  var darks = document.querySelectorAll('.noite, .fecho');
+  function upd(){
+    var on=false, ly=28;
+    darks.forEach(function(s){ var r=s.getBoundingClientRect(); if(r.top<=ly && r.bottom>ly) on=true; });
+    link.classList.toggle('on-dark', on);
+  }
+  window.addEventListener('scroll', upd, {passive:true}); upd();
+})();
+</script>
+</body>
+</html>
