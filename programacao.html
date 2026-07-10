@@ -434,13 +434,13 @@
   .cortesia-tag {
     display: inline-block;
     margin-top: 16px;
-    padding: 8px 16px;
-    background: transparent;
+    padding: 7px 15px;
+    background: rgba(139,58,31,0.09);
     color: var(--terracota-escuro);
-    border: 1px solid var(--terracota-escuro);
+    border: none;
     font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.4em;
+    font-size: 9px;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     border-radius: 100px;
   }
@@ -538,6 +538,24 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* ==== hero programação: padrão da dobra CTA da home + botões ==== */
+  .pagina-hero{background:linear-gradient(180deg,var(--terracota) 0%,var(--terracota-escuro) 55%,var(--terracota-noite) 100%);min-height:100vh;color:var(--osso)}
+  .pagina-hero::after{background:linear-gradient(to bottom,transparent,var(--ocre-claro));opacity:.5}
+  .pagina-hero h1{color:var(--osso)}
+  .pagina-hero p{color:var(--osso-quente)}
+  .pagina-hero p em{color:var(--ocre-claro)}
+  .pagina-hero .label{font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.5em;text-transform:uppercase;color:var(--ocre-claro);margin-bottom:26px}
+  .pagina-hero .ornamento svg{color:var(--ocre-claro);opacity:.7}
+  .prog-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 30%,rgba(217,168,108,.20) 0%,transparent 55%),radial-gradient(ellipse at 50% 92%,rgba(194,136,64,.12) 0%,transparent 50%);animation:progPulse 8s ease-in-out infinite}
+  @keyframes progPulse{0%,100%{opacity:.85}50%{opacity:1}}
+  .evento-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .evento-btn{display:inline-flex;align-items:center;gap:7px;font-family:'Inter',sans-serif;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--terracota-escuro);text-decoration:none;border:1px solid rgba(92,36,16,.4);padding:9px 15px;border-radius:100px;transition:background .3s,color .3s,border-color .3s}
+  .evento-btn:hover{background:var(--terracota-escuro);color:var(--osso);border-color:var(--terracota-escuro)}
+  .evento-btn svg{width:13px;height:13px;flex-shrink:0}
+  .evento.evento-festa .evento-btn{color:var(--osso);border-color:rgba(242,234,216,.5)}
+  .evento.evento-festa .evento-btn:hover{background:var(--osso);color:var(--terracota-escuro);border-color:var(--osso)}
+  @media(prefers-reduced-motion:reduce){.prog-glow{animation:none}}
 </style>
 </head>
 <body>
@@ -554,13 +572,15 @@
   <nav class="menu-nav">
     <a href="/">início</a>
     <a href="/programacao" class="atual">programação</a>
-    <a href="/hospedagens">onde ficar</a>
+    <a href="/cachoeiras">cachoeiras</a>
   </nav>
   <div class="menu-rodape">10 · 11 julho 2026</div>
 </div>
 
 <!-- ============ HERO ============ -->
 <section class="pagina-hero">
+  <div class="prog-glow" aria-hidden="true"></div>
+  <div class="label reveal">os dois dias</div>
   <h1 class="reveal">programação</h1>
   <p class="reveal">
     Dois dias entre <em>cristais, cachoeiras, estrelas</em> e muita celebração.
@@ -588,6 +608,27 @@
   <div class="timeline">
     <div class="evento reveal">
       <div class="evento-icone">
+        <svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 30 Q14 42 28 42 Q42 42 42 30 Z"/>
+          <path d="M11 30 H45"/>
+          <path d="M23 14 q-3 4 0 8 M33 14 q-3 4 0 8"/>
+        </svg>
+      </div>
+      <div class="evento-conteudo">
+        <div class="evento-hora">13h</div>
+        <h3 class="evento-titulo">Na Mata</h3>
+        <div class="evento-local">Almoço · Rio da Lua</div>
+        <p class="evento-descricao">
+          Programação <em>extra-oficial</em> pra quem já chega na sexta. O aniversariante estará por lá — mas a reserva é por sua conta, direto com o restaurante.
+        </p>
+        <div class="evento-btns">
+          <a class="evento-btn" href="https://www.instagram.com/namata.chapada/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg>reservar</a>
+          <a class="evento-btn" href="https://maps.app.goo.gl/BYheuCTDL28BXeN37" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6-5.5 6-10a6 6 0 0 0-12 0c0 4.5 6 10 6 10z"/><circle cx="12" cy="11" r="2.1"/></svg>ver no mapa</a>
+        </div>
+      </div>
+    </div>
+    <div class="evento reveal">
+      <div class="evento-icone">
         <!-- ÍCONE BAR / LUA -->
         <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M36 12 C29 12 24 17 24 24 C24 31 29 36 36 36 C39 36 41 35 43 34 C40 38 36 40 32 40 C24 40 18 34 18 26 C18 18 24 12 32 12 C33 12 35 12 36 12 Z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
@@ -602,9 +643,12 @@
         <h3 class="evento-titulo">Bar do Pelé</h3>
         <div class="evento-local">Vila de São Jorge</div>
         <p class="evento-descricao">
-          Uma noite para <em>chegar com calma</em>. Reencontros, primeiros brindes, o céu já estrelado da Chapada.
+          Uma noite pra <em>abrir as comemorações</em>. Reencontros, cerveja gelada, forrózinho pé de serra.
         </p>
         <div class="cortesia-tag">cortesia do aniversariante</div>
+        <div class="evento-btns">
+          <a class="evento-btn" href="https://maps.app.goo.gl/t2kaQ7LGTtsCpMY46" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6-5.5 6-10a6 6 0 0 0-12 0c0 4.5 6 10 6 10z"/><circle cx="12" cy="11" r="2.1"/></svg>ver no mapa</a>
+        </div>
       </div>
     </div>
   </div>
@@ -635,11 +679,16 @@
         </svg>
       </div>
       <div class="evento-conteudo">
-        <div class="evento-hora">manhã · 9h</div>
+        <div class="evento-hora">8h30</div>
         <h3 class="evento-titulo">cachoeira</h3>
-        <div class="evento-local">a confirmar</div>
         <p class="evento-descricao">
-          Um banho na <em>água ancestral</em> da Chapada. O local exato será informado na sua chegada — vamos garantir que seja um lugar tranquilo, fácil e nosso por algumas horas.
+          Um banho nas <em>águas ancestrais</em> da Chapada. Escolha a cachoeira de sua preferência:
+        </p>
+        <div class="evento-btns">
+          <a class="evento-btn" href="/cachoeiras"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>ver cachoeiras</a>
+        </div>
+        <p class="evento-descricao" style="margin-top:14px">
+          O aniversariante estará na <em>Almécegas + São Bento</em>.
         </p>
       </div>
     </div>
@@ -660,7 +709,7 @@
         </svg>
       </div>
       <div class="evento-conteudo">
-        <div class="evento-hora">13h</div>
+        <div class="evento-hora">12h</div>
         <h3 class="evento-titulo">tarde livre</h3>
         <div class="evento-local">à sua escolha</div>
         <p class="evento-descricao">
@@ -681,10 +730,13 @@
       <div class="evento-conteudo">
         <div class="evento-hora">a partir das 16h30</div>
         <h3 class="evento-titulo">Antonio 40</h3>
-        <div class="evento-local">Local · Pura Chapada</div>
+        <div class="evento-local">Pura Chapada</div>
         <p class="evento-descricao">
-          A celebração principal — <em>da tarde até 1h da manhã</em>.
+          A celebração principal — <em>da tarde até 2h da manhã</em>. Confira o tempo de deslocamento da sua hospedagem até o Pura pra não se atrasar.
         </p>
+        <div class="evento-btns">
+          <a class="evento-btn" href="https://maps.app.goo.gl/LWxvALgcycGsp3p36" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6-5.5 6-10a6 6 0 0 0-12 0c0 4.5 6 10 6 10z"/><circle cx="12" cy="11" r="2.1"/></svg>ver no mapa</a>
+        </div>
       </div>
     </div>
 
@@ -699,12 +751,15 @@
     <p class="dia-subtitulo reveal">
       Sem programação oficial. <em>Se possível, aproveite o dia</em> para conhecer um pouco mais da magia da Chapada dos Veadeiros.
     </p>
+    <div class="evento-btns" style="justify-content:center;margin-top:22px">
+      <a class="evento-btn" href="/cachoeiras#domingo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>cachoeiras pro domingo</a>
+    </div>
   </div>
 </section>
 
 <!-- ============ RODAPÉ ============ -->
 <footer class="rodape">
-  <a href="/">voltar ao início</a>
+  <a href="#" id="voltarInicio">voltar ao início</a>
 </footer>
 
 <script>
@@ -747,6 +802,13 @@
       const rect = r.getBoundingClientRect();
       if (rect.top < window.innerHeight) r.classList.add('ativo');
     });
+  });
+
+  // voltar ao topo (sobe a própria página)
+  const btnTopo = document.getElementById('voltarInicio');
+  if (btnTopo) btnTopo.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 
